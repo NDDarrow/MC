@@ -52,7 +52,7 @@ public class MemberControl {
     }
 
     @PostMapping("/IdFind")
-    public String foundId(String name, Long tell){
+    public String foundId(String name, String tell){
         Member user = memberService.findEmail(name, tell);
         if(user != null){
 
@@ -70,7 +70,7 @@ public class MemberControl {
         return null;
     }
     @PostMapping("/PwFind")
-    public Member foundPw(String email, Long tell){
+    public Member foundPw(String email, String tell){
         Member user = memberService.findPw(email, tell);
         if(user != null) return user;
         else return null;

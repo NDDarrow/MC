@@ -8,6 +8,6 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class Postservice {
+public class PostService {
 
 }

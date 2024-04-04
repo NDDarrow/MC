@@ -1,5 +1,6 @@
 package com.example.MC.entity;
 
+import com.example.MC.constant.BoardType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,14 +19,18 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String board;
-    @Column
+    @Column(nullable = false)
+    private BoardType board;
+
+    @Column(nullable = false, length = 40)
     private String title;
-    @Column
+
+    @Column(nullable = false, length = 4000)
+    private String body;
+
     @ManyToOne
     @JoinColumn(name= "member_id")
-    private Long writer;
+    private Member member;
 
     @Column
     int view;

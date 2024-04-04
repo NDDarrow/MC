@@ -24,7 +24,7 @@ public class MemberDto {
 
     private String name;
 
-    private Long tell;
+    private String tell;
 
     private String zipCode;
 
@@ -35,7 +35,7 @@ public class MemberDto {
     public static MemberDto createDto(Member member){
         MemberDto memberDto = new MemberDto();
         memberDto.setName(member.getName());
-        memberDto.setNick(member.getNick());
+        memberDto.setNick(member.getUserNick());
         memberDto.setTell(member.getTell());
         memberDto.setEmail(member.getEmail());
         memberDto.setZipCode(member.getZipCode());

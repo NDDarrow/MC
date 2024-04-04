@@ -29,14 +29,14 @@ public class MemberService {
         }
     }
 
-    public Member findEmail(String name, Long tell){
+    public Member findEmail(String name, String tell){
         Member user = memberRepo.findByNameAndTell(name,tell);
         if(user != null){
             return user;
         }else return null;
     }
 
-    public Member findPw(String email, Long tell){
+    public Member findPw(String email, String tell){
         Member user = memberRepo.findByEmailAndTell(email, tell);
         if(user != null){
             return user;

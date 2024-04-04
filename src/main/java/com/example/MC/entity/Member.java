@@ -28,15 +28,14 @@ public class Member {
     @Column
     private String password;
 
-    @Column(name="user_nick")
-    private String nick;
+    @ColumnDefault("any")
+    private String userNick;
 
-    @Column
-    @ColumnDefault("아무개")
+
     private String name;
 
-    @Column
-    private Long tell;
+
+    private String tell;
 
     @Column
     private String zipCode; //우편번호
@@ -55,7 +54,7 @@ public class Member {
         member.setEmail(memberDto.getEmail());
         String password = passwordEncoder.encode(memberDto.getPassword());
         member.setPassword(password);
-        member.setNick(memberDto.getNick());
+        member.setUserNick(memberDto.getNick());
         member.setName(memberDto.getName());
         member.setTell(memberDto.getTell());
         member.setAddr1(member.getAddr1());

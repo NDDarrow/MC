@@ -27,7 +27,7 @@ public class MemberControl {
         model.addAttribute("memberDto", new MemberDto());
         return "member/SignUp";
     }
-    @PostMapping("/SignUp")
+    @PostMapping("/signUp")
     public String newMember(@Valid MemberDto memberDto, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             return "member/SignUp";

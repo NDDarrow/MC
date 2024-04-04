@@ -20,7 +20,7 @@ public class MemberDto {
     @Length(min=6,max=16, message = "6~12자")
     private String password;
 
-    private String nick;
+    private String userNick;
 
     private String name;
 
@@ -35,7 +35,7 @@ public class MemberDto {
     public static MemberDto createDto(Member member){
         MemberDto memberDto = new MemberDto();
         memberDto.setName(member.getName());
-        memberDto.setNick(member.getUserNick());
+        memberDto.setUserNick(member.getUserNick());
         memberDto.setTell(member.getTell());
         memberDto.setEmail(member.getEmail());
         memberDto.setZipCode(member.getZipCode());

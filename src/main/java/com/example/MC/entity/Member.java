@@ -28,13 +28,11 @@ public class Member {
     @Column
     private String password;
 
-    @ColumnDefault("any")
     private String userNick;
-
 
     private String name;
 
-
+    @Column
     private String tell;
 
     @Column
@@ -54,7 +52,7 @@ public class Member {
         member.setEmail(memberDto.getEmail());
         String password = passwordEncoder.encode(memberDto.getPassword());
         member.setPassword(password);
-        member.setUserNick(memberDto.getNick());
+        member.setUserNick(memberDto.getUserNick());
         member.setName(memberDto.getName());
         member.setTell(memberDto.getTell());
         member.setAddr1(member.getAddr1());

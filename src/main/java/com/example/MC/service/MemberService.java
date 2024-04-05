@@ -4,6 +4,10 @@ import com.example.MC.dto.MemberDto;
 import com.example.MC.entity.Member;
 import com.example.MC.repository.MemberRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +17,7 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
     private final MemberRepo memberRepo;
 
 
@@ -46,5 +50,25 @@ public class MemberService {
     public void reSign(String email, String pw){
         Member user = memberRepo.findByEmail(email);
         memberRepo.delete(user);
+    }
+
+    public Member findByEmail(String email){
+        Member user = memberRepo.findByEmail(email);
+        return user;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // 스프링 시큐리티 사용시 커스텀로그인 DB의 데이터로 로그인 진행시
+        // 데이터로 로그인 진행시 필요한 메서드
+        Member member = memberRepo.findByEmail(username);
+        if( member == null){
+            throw new UsernameNotFoundException(username);
+        }
+        return User.builder()
+                .username(member.getEmail() )
+                .password(member.getPassword() )
+                .roles(member.getRole().toString() ).build();
+
     }
 }

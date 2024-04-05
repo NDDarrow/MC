@@ -3,6 +3,7 @@ package com.example.MC.entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.ui.Model;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ public class Follower {
     private Long userId;
 
     @ManyToOne
-    @JoinColumn(name= "member_id")
+    @JoinColumn(name = "member_id")
     private Member member;
 }
+

@@ -14,15 +14,8 @@ public class MainControl {
     private final PostService postService;
 
     @GetMapping("/")
-    public String main(){
+    public String main(Model model){
 
-        System.out.println("sex");
         return "main";
-    }
-
-    @GetMapping("/post/{sex}")
-    public String PostManTest(@PathVariable String sex){
-        System.out.println(sex);
-        return sex;
     }
 }

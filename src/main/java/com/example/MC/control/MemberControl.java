@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 
 @Controller
@@ -87,11 +88,17 @@ public class MemberControl {
     }
 
     @GetMapping("/MyPage")
-    public String myPage(Model model){
+    public String myPage(Principal principal, Model model){
+        String userEmail = principal.getName();
+        Member user = memberService.findByEmail(userEmail);
+        model.addAttribute("user",user);
         return "member/myPage";
     }
-    @GetMapping("/MyUpdate")
-    public String updateForm(Model model){
+    @GetMapping("/MyUpdate/")
+    public String updateForm(Principal principal, Model model){
+        String userEmail = principal.getName();
+        Member user = memberService.findByEmail(userEmail);
+        model.addAttribute("user",user);
         return "member/myUpdate";
     }
     @PostMapping("/MyUpdate")

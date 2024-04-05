@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -29,6 +30,12 @@ public class SecurityConfig {
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                 .logoutSuccessUrl("/");
+        http.authorizeHttpRequests()
+                .mvcMatchers("/css/**", "/javascript/**", "/image/**").permitAll()
+                .mvcMatchers("/**").permitAll(); //모두 허용할 페이지
+                //.mvcMatchers("members/MyPage").hasRole("USER")
+                //.anyRequest().authenticated();
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse() ).disable();
         return http.build();
     }
     @Bean

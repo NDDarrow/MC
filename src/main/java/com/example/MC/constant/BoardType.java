@@ -1,5 +1,5 @@
 package com.example.MC.constant;
 
 public enum BoardType {//게시판 종류 이넘
-    ABOARD;
+    ROCK, HIPHOP, K_POP_G, K_POP_B,BALLAD, METAL, POP, FINDMUSIC, FREEBOARD, KNEWS, GNEWS, FESTIVAL, ABOARD;
 }

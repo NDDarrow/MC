@@ -32,7 +32,7 @@ public class MemberDto {
 
     private String addr2;
 
-    public static MemberDto createDto(Member member){
+    public static MemberDto createMemberDto(Member member){
         MemberDto memberDto = new MemberDto();
         memberDto.setName(member.getName());
         memberDto.setUserNick(member.getUserNick());

@@ -1,0 +1,32 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragment/basic}">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/pdFind.css}">
+</th:block>
+<th:block layout:fragment="script"></th:block>
+
+<div layout:fragment="content">
+    <p th:if="${resetPw}" th:text="${resetPw}"></p>
+    <p th:if="${NonId}" th:text="${NonId}"></p>
+    <form th:if="${pwFindMessage}" method="post" action="/members/ResetPw">
+        <p th:text="${pwFindMessage}"></p>
+        <div>
+            <input type="text" id="user_email" name="user_email" th:value="${email}">
+        </div>
+        <div>
+            <input type="text" id="user_tell" name="user_tell" th:value="${tell}">
+        </div>
+        <div>
+            <input type="password" id="password" name="password" placeholder="새 비밀번호 입력">
+        </div>
+        <button>비밀번호 재등록</button>
+    </form>
+    <form th:unless="${pwFindMessage}" role="form" method="post" action="/members/PwFind">
+        <div>
+            <input type="text" id="email" name="email" placeholder="이메일입력">
+        </div>
+        <div>
+            <input type="text" id="tell" name="tell" placeholder="전화번호입력">
+        </div>
+        <button>비밀번호 찾기</button>
+    </form>
+</div>

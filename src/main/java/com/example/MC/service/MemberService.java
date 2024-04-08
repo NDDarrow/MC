@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.security.Principal;
+
+import static com.example.MC.entity.Member.resetPw;
+
 
 @Service
 @Transactional
@@ -46,6 +50,10 @@ public class MemberService implements UserDetailsService {
             return user;
         }else return null;
     }
+    public void resetPW(String email, String tell, String password, PasswordEncoder passwordEncoder){
+        Member user = memberRepo.findByEmailAndTell(email, tell);
+        resetPw(user, password, passwordEncoder);
+    }
 
     public void reSign(String email, String pw){
         Member user = memberRepo.findByEmail(email);
@@ -57,6 +65,21 @@ public class MemberService implements UserDetailsService {
         return user;
     }
 
+    public void updateMember(MemberDto memberDto){
+        Member user = memberRepo.findByEmail(memberDto.getEmail());
+        if(user.getUserNick() != memberDto.getUserNick() || memberDto.getUserNick() != null)
+            user.setUserNick(memberDto.getUserNick());
+        if(user.getName() != memberDto.getName() || memberDto.getName() != null)
+            user.setName(memberDto.getName());
+        if(user.getTell() != memberDto.getTell() || memberDto.getTell() != null)
+            user.setTell(memberDto.getTell());
+        if(user.getZipCode() != memberDto.getZipCode() || memberDto.getZipCode() != null)
+            user.setZipCode(memberDto.getZipCode());
+        if(user.getAddr1() != memberDto.getAddr1() || memberDto.getAddr1() != null) {
+            user.setAddr1(memberDto.getAddr1());
+            user.setAddr2(memberDto.getAddr2());
+        }
+    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 스프링 시큐리티 사용시 커스텀로그인 DB의 데이터로 로그인 진행시

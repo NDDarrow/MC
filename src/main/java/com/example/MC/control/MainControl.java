@@ -1,7 +1,6 @@
 package com.example.MC.control;
 
 import com.example.MC.service.PostService;
-import com.example.MC.vo.test;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

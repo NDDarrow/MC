@@ -60,4 +60,10 @@ public class Member extends BaseEntity{
         member.setRole(Role.USER);
         return member;
     }
+
+    public static Member resetPw(Member member, String password, PasswordEncoder passwordEncoder){
+        String newPW = passwordEncoder.encode(password);
+        member.setPassword(newPW);
+        return member;
+    }
 }

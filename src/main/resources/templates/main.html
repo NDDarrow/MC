@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-        
-</body>
-</html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/basic}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</th:block>
+<th:block layout:fragment="script"></th:block>
+
+<div layout:fragment="content">
+    <h1>main ready?</h1>
+    <h2>HELLO WOARD!</h2>
+    <a href="/members/signUp">회원가입</a>
+    <div sec:authorize="isAnonymous()">
+        <a href="/members/login">로그인</a>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a href="/members/logout">로그아웃</a>
+    </div>
+    <div>
+        <a href="/members/IdFind">아이디찾기</a>
+    </div>
+    <div>
+        <a href="/members/MyPage">내정보</a>
+    </div>
+
+</div>
+

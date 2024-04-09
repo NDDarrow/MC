@@ -5,31 +5,30 @@
 <th:block layout:fragment="script"></th:block>
 
 <div layout:fragment="content">
-    <form th:object="${user}" method="post" action="/members/MyUpdate">
+    <form th:object="${memberDto}" method="post" action="/members/MyUpdate">
         <div>
-            <input type="text" th:field="*{email}" th:value="${user.email}" readonly>
+            <input type="text" th:field="*{email}" th:value="${memberDto.email}" required>
         </div>
         <div>
             <a href="/members/ResetPw">비밀번호 변경</a>
-            <input type="hidden" th:field="*{password}" th:value="${user.password}">
         </div>
         <div>
-            <input type="text" th:field="*{userNick}" th:value="${user.userNick}">
+            <input type="text" th:field="*{userNick}" th:value="${memberDto.userNick}">
         </div>
         <div>
-            <input type="text" th:field="*{name}" th:value="${user.name}">
+            <input type="text" th:field="*{name}" th:value="${memberDto.name}">
         </div>
         <div>
-            <input type="text" th:field="*{tell}" th:value="${user.tell}">
+            <input type="text" th:field="*{tell}" th:value="${memberDto.tell}">
         </div>
         <div>
-            <input type="text" th:field="*{zipCode}" th:value="${user.zipCode}">
+            <input type="text" th:field="*{zipCode}" th:value="${memberDto.zipCode}">
         </div>
         <div>
-            <input type="text" th:field="*{addr1}" th:value="${user.addr1}">
+            <input type="text" th:field="*{addr1}" th:value="${memberDto.addr1}">
         </div>
         <div>
-            <input type="text" th:field="*{addr2}" th:value="${user.addr2}">
+            <input type="text" th:field="*{addr2}" th:value="${memberDto.addr2}">
         </div>
         <button type="submit">정보 수정</button>
     </form>

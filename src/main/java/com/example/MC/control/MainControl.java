@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class MainControl {
     private final PostService postService;
 

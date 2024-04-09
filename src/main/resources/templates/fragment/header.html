@@ -1,8 +1,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="header" id="header">
-
-
-    <div class="nav-item" sec:authorize="isAuthenticated()">
-        <a class="nav-link" href="/members/logout">로그아웃</a>
+    <div>
+        <a href="/board/Genre">장르별</a>
+        <a href="/board/FindMusic">음악찾기</a>
+        <a href="/board/FreeBoard">자유게시판</a>
+        <a href="/board/News">뉴스</a>
     </div>
 </div>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 import static com.example.MC.dto.MemberDto.createMemberDto;
+import static org.aspectj.bridge.MessageUtil.error;
 
 
 @Controller
@@ -110,7 +112,8 @@ public class MemberControl {
     public String myPage(Principal principal, Model model){
         String userEmail = principal.getName();
         Member user = memberService.findByEmail(userEmail);
-        model.addAttribute("user",user);
+        MemberDto userDto = createMemberDto(user);
+        model.addAttribute("user",userDto);
         return "member/myPage";
     }
     @GetMapping("/MyUpdate")
@@ -118,11 +121,12 @@ public class MemberControl {
         String userEmail = principal.getName();
         Member user = memberService.findByEmail(userEmail);
         MemberDto userDto = createMemberDto(user);
-        model.addAttribute("user",userDto);
+        model.addAttribute("memberDto",userDto);
         return "member/myUpdate";
     }
     @PostMapping("/MyUpdate")
-    public String updateStat(@Valid MemberDto memberDto,BindingResult bindingResult, Model model , Principal principal){
+    public String updateInfo(@Valid MemberDto memberDto,BindingResult bindingResult, Model model , Principal principal){
+        System.out.println("in");
         if(bindingResult.hasErrors()){
             return "member/myUpdate";
         }
@@ -132,7 +136,7 @@ public class MemberControl {
             model.addAttribute("errorMessage", e.getMessage());
             return "member/signUp";
         }
-        return "rediect:/member/myPage";
+        return "redirect:/members/MyPage";
     }
 
     @GetMapping("/ReSign")
@@ -140,8 +144,13 @@ public class MemberControl {
         return "member/reSign";
     }
     @PostMapping("/ReSign")
-    public String ReSign(String email, String pw){
-        memberService.reSign(email, pw);
-        return "redirect:/";
+    public String ReSign(String email, String pw, Principal principal, Model model){
+        if(principal.getName().equals(email)) {
+            memberService.reSign(email);
+            return "members/logout";
+        }else{
+            model.addAttribute("disaccordEmail", "유저정보가 다릅니다");
+            return "redirect:/";
+        }
     }
 }

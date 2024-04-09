@@ -20,7 +20,7 @@ public class APostDto {
 
     @Length(max=4000, message = "본문 2000자 제한")
     private String body;
-
+    @Length(min=4,max=4)
     private int password;
 
     public static APostDto createDto(APost aPost){

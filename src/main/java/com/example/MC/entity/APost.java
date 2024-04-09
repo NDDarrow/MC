@@ -15,7 +15,7 @@ import javax.persistence.*;
 @ToString
 public class APost extends BaseEntity{
     @Id
-    @Column(name = "post_id")
+    @Column(name = "a_post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

@@ -55,7 +55,7 @@ public class MemberService implements UserDetailsService {
         resetPw(user, password, passwordEncoder);
     }
 
-    public void reSign(String email, String pw){
+    public void reSign(String email){
         Member user = memberRepo.findByEmail(email);
         memberRepo.delete(user);
     }

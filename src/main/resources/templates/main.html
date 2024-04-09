@@ -1,5 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{fragment/basic}" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragment/basic}">
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </th:block>
@@ -9,10 +8,10 @@
     <h1>main ready?</h1>
     <h2>HELLO WOARD!</h2>
     <a href="/members/signUp">회원가입</a>
-    <div sec:authorize="isAnonymous()">
+    <div>
         <a href="/members/login">로그인</a>
     </div>
-    <div sec:authorize="isAuthenticated()">
+    <div>
         <a href="/members/logout">로그아웃</a>
     </div>
     <div>
@@ -23,4 +22,4 @@
     </div>
 
 </div>
-
+</html>

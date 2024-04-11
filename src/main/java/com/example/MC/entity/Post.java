@@ -5,11 +5,9 @@ import com.example.MC.dto.PostDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -39,17 +37,15 @@ public class Post extends BaseEntity{
     int good;
     @Column
     int bad;
+    @Column
+    int commentCnt;
 
     public static Post createPost(PostDto postDto, Member member){
         Post post = new Post();
         post.setBoard(postDto.getBoard());
         post.setTitle(postDto.getTitle());
         post.setBody(postDto.getBody());
-        post.setGood(0);
-        post.setBad(0);
-        post.setView(0);
         post.setMember(member);
         return post;
     }
-
 }

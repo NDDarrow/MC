@@ -21,5 +21,5 @@ public class PostImg extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name="post_id")
-    private Post Post;
+    private Post post;
 }

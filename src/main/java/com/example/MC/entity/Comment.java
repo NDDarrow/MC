@@ -20,8 +20,6 @@ public class Comment extends BaseEntity{
 
     private String body;
 
-    private String writer;
-
     int good;
 
     int bad;

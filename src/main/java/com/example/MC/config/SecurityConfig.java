@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                 .logoutSuccessUrl("/");
         http.authorizeHttpRequests()
-                .mvcMatchers("/css/**", "/javascript/**", "/image/**").permitAll()
+                .mvcMatchers("/css/**", "/javascript/**", "/image/**","").permitAll()
                 .mvcMatchers("/**").permitAll(); //모두 허용할 페이지
                 //.mvcMatchers("members/MyPage").hasRole("USER")
                 //.anyRequest().authenticated();

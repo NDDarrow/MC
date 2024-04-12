@@ -26,7 +26,7 @@ public class PostImgService {
 
         if( !StringUtils.isEmpty(oriName)){ //사용자가 업로드 한 원본 이미지이름 여부
             imgName = fileService.uploadFile(imgLocation, oriName, multipartFile.getBytes());
-            imgUrl = "/images/item/" + imgName;
+            imgUrl = "/images/post/" + imgName;
         }
         postImg.setImgUrl(imgUrl);
         postImg.setImgName(imgName);

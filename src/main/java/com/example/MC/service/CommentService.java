@@ -5,6 +5,7 @@ import com.example.MC.entity.Comment;
 import com.example.MC.entity.Member;
 import com.example.MC.entity.Post;
 import com.example.MC.repository.CommentRepo;
+import com.example.MC.repository.MemberRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,15 +23,21 @@ import java.util.List;
 @Transactional
 public class CommentService {
     private final CommentRepo commentRepo;
+    private final MemberRepo memberRepo;
     public Page<CommentDto> findComment(Long id, Pageable pageable){
         Page<Comment> comments = commentRepo.findByPostIdOrderByIdDesc(id, pageable);
         List<CommentDto> commentDtoList = new ArrayList<>();
         for(Comment comment : comments){
+            Member user = memberRepo.findByEmail(comment.getCreatedBy());
             CommentDto commentDto = CommentDto.createDto(comment);
+            commentDto.setWriter(user.getUserNick());
             commentDtoList.add(commentDto);
         }
         long total = commentRepo.countByPostId(id);
 
         return new PageImpl<>(commentDtoList, pageable, total);
+    }
+    public void writeComment(Comment comment){
+        commentRepo.save(comment);
     }
 }

@@ -33,7 +33,7 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final NumberPath<Integer> good = createNumber("good", Integer.class);
 
-    public final NumberPath<Long> Id = createNumber("Id", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
     public final StringPath modifiedBy = _super.modifiedBy;

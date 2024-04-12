@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,9 @@ import java.util.List;
 @Getter
 @Setter
 public class PostDto {
-    @NotEmpty(message = "게시판을 선택해 주세요")
+    private Long id;
+
+    @NotNull(message = "게시판을 선택해 주세요")
     private BoardType board;
 
     @NotEmpty(message =" 제목 필수 입력")
@@ -33,7 +36,13 @@ public class PostDto {
 
     private List<Long> postImgIds =new ArrayList<>();
 
-    private static ModelMapper mapper = new ModelMapper();
-
-    public static PostDto of(Post post) {return mapper.map(post, PostDto.class);}
+    public static PostDto of(Post post){
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setBoard(post.getBoard());
+        postDto.setBody(post.getBody());
+        postDto.setTitle(post.getTitle());
+        postDto.setRegTime(post.getRegTime());
+        return postDto;
+    }
 }

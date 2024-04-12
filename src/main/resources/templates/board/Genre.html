@@ -6,4 +6,13 @@
 
 <div layout:fragment="content">
     <h1>Genre</h1>
+    <a href="/board/posting">글쓰기</a>
+
+    <div th:each="item, stat : ${items.getContent()}">
+        <a th:href="@{'/board/view/' + ${item.id}}" th:text="${item.title}"></a>
+        <div th:text="${item.body}"></div>
+        <div th:text="${item.createdBy}"></div>
+        <div th:text="${item.regTime}"></div>
+    </div>
+
 </div>

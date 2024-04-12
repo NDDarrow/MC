@@ -4,6 +4,7 @@ import com.example.MC.constant.BoardType;
 import com.example.MC.dto.APostDto;
 import com.example.MC.dto.CommentDto;
 import com.example.MC.dto.PostDto;
+import com.example.MC.entity.Comment;
 import com.example.MC.entity.Member;
 import com.example.MC.entity.Post;
 import com.example.MC.service.CommentService;
@@ -66,18 +67,26 @@ public class PostControl {
 
         model.addAttribute("items", NewsList);
         model.addAttribute("maxPage",5);
+
         return "/board/News";
     }
     @GetMapping(value = {"/view/{id}","/view/{id}/{page}"})
     public String viewPost(@PathVariable("id") long id,@PathVariable("page") Optional<Integer> page, Model model){
         PostDto postDto = postService.viewPost(id);
         model.addAttribute("post",postDto);
-
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<CommentDto> commentDtoList = commentService.findComment(id, pageable);
-        model.addAttribute("comment", commentDtoList);
 
-        return "/board/view/{id}";
+        Page<CommentDto> commentDtoList = commentService.findComment(id, pageable);
+        model.addAttribute("commentList", commentDtoList);
+        model.addAttribute("commentDto", new CommentDto() );
+        model.addAttribute("postId",id);
+
+        return "/board/view";
+    }
+    @GetMapping("/posting")
+    public String writeForm(Model model){
+        model.addAttribute("postDto", new PostDto());
+        return "/board/PostForm";
     }
 
     @PostMapping("/posting")
@@ -98,5 +107,20 @@ public class PostControl {
     @PostMapping("/Aboard/post")
     public String writeAboard(@Valid APostDto aPostDto, BindingResult bindingResult){
         return null;
+    }
+
+
+        @PostMapping("{id}/comment")
+    public String writeComment(@PathVariable("id") String postId, @Valid CommentDto commentDto, BindingResult bindingResult){
+        long id = Long.parseLong(postId);
+        Comment comment = Comment.createComment(commentDto);
+        if(bindingResult.hasErrors()){
+            return "redirect:/board/view/"+id;
+        }
+        Post post = postService.findPost(id);
+        comment.setPost(post);
+        commentService.writeComment(comment);
+        post.setCommentCnt(post.getCommentCnt()+1);
+        return "redirect:/board/view/"+id;
     }
 }

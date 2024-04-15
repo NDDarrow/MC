@@ -5,5 +5,18 @@
 <th:block layout:fragment="script"></th:block>
 
 <div layout:fragment="content">
-    
+    <div class="listWrap">
+        <ul class="bodyList">
+            <li class="bodyTag1">제목</li>
+            <li class="bodyTag">작성자</li>
+            <li class="bodyTag">작성일</li>
+            <li class="bodyTag">히트수</li>
+        </ul>
+        <ul class="bodyList" th:each="item, stat :${items.getContent()}">
+            <li class="bodyTag1"><a th:href="@{'/board/view/' + ${item.id}}" th:text="${item.title}"></a></li>
+            <li class="bodyTag" th:text="${item.createdBy}">작성자</li>
+            <li class="bodyTag" th:text="${item.regTime}">작성일</li>
+            <li class="bodyTag" th:text="${item.good}">히트수</li>
+        </ul>
+    </div>
 </div>

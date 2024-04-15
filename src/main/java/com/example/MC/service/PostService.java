@@ -139,4 +139,7 @@ public class PostService {
         }
         return new PageImpl<>(postDtoPage, pageable, postPage.getTotalPages());
     }
+    public void updatePost(Post post){
+        postRepo.save(post);
+    }
 }

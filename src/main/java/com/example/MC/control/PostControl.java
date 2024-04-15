@@ -136,6 +136,7 @@ public class PostControl {
         comment.setPost(post);
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
+        postService.updatePost(post);
         return "redirect:/board/view/"+id;
     }
     //대댓글 작성

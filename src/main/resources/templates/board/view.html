@@ -23,8 +23,8 @@
     </div>
 <!--    게시글 끝-->
 <!--    댓글-->
-    <div th:if="${not #lists.isEmpty(commentList)}">
-        <div th:each="comments : ${commentList}">
+    <div th:if="${not #lists.isEmpty(items)}">
+        <div th:each="comments : ${items}">
             <div th:text="${comments.writer}"></div>
             <div th:text="${comments.body}"></div>
             <div th:text="${comments.regTime}"></div>

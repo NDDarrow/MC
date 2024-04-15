@@ -32,13 +32,13 @@ public class Post extends BaseEntity{
     private Member member;
 
     @Column
-    int view;
+    int view = 0;
     @Column
-    int good;
+    int good = 0;
     @Column
-    int bad;
+    int bad = 0;
     @Column
-    int commentCnt;
+    int commentCnt = 0;
 
     public static Post createPost(PostDto postDto, Member member){
         Post post = new Post();

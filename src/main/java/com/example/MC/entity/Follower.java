@@ -1,5 +1,6 @@
 package com.example.MC.entity;
 
+import com.example.MC.dto.FollowerDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,5 +21,11 @@ public class Follower {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+    public static  Follower createFollower(FollowerDto followerDto, Member member){
+        Follower follower = new Follower();
+        follower.setUserId(follower.getUserId());
+        return follower;
+    }
 }
+
 

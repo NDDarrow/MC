@@ -3,6 +3,7 @@ package com.example.MC.control;
 import com.example.MC.constant.BoardType;
 import com.example.MC.dto.APostDto;
 import com.example.MC.dto.CommentDto;
+import com.example.MC.dto.ItemSearchDto;
 import com.example.MC.dto.PostDto;
 import com.example.MC.entity.Comment;
 import com.example.MC.entity.Member;
@@ -33,24 +34,30 @@ public class PostControl {
     private final PostService postService;
     private final MemberService memberService;
     private final CommentService commentService;
+    //장르 게시판 이동
     @GetMapping(value = {"/Genre", "/Genre/{page}"})
     public String genreBoard(@PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> genreList = postService.getPostList(BoardType.ROCK, pageable);
-
         model.addAttribute("items", genreList);
         model.addAttribute("maxPage",5);
+        model.addAttribute("board","genre");
+        model.addAttribute("itemSearchDto", new ItemSearchDto() );
         return "/board/Genre";
     }
-    @GetMapping(value = {"/FindMusic","/FindMusic/{page}"})
-    public String FmBoard(@PathVariable("page") Optional<Integer> page, Model model){
+    //음악찾기 게시판 이동
+        @GetMapping(value = {"/FindMusic","/FindMusic/{page}"})
+    public String FmBoard(@PathVariable(name="page",required = false) Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> FMList = postService.getPostList(BoardType.FINDMUSIC, pageable);
 
         model.addAttribute("items", FMList);
         model.addAttribute("maxPage",5);
+        model.addAttribute("board","findMusic");
+        model.addAttribute("itemSearchDto", new ItemSearchDto() );
         return "/board/FindMusic";
     }
+    //자유게시판 이동
     @GetMapping(value = {"/FreeBoard", "/FreeBoard/{page}"})
     public String FreeBoard(@PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -58,8 +65,11 @@ public class PostControl {
 
         model.addAttribute("items", FreeList);
         model.addAttribute("maxPage",5);
+        model.addAttribute("board","freeBoard");
+        model.addAttribute("itemSearchDto", new ItemSearchDto() );
         return "/board/Freeboard";
     }
+    //뉴스게시판 이동
     @GetMapping(value = {"/News", "/News/{page}"})
     public String newsBoard(@PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -67,9 +77,11 @@ public class PostControl {
 
         model.addAttribute("items", NewsList);
         model.addAttribute("maxPage",5);
-
+        model.addAttribute("itemSearchDto", new ItemSearchDto() );
+        model.addAttribute("board","news");
         return "/board/News";
     }
+    //게시글 보기
     @GetMapping(value = {"/view/{id}","/view/{id}/{page}"})
     public String viewPost(@PathVariable("id") long id,@PathVariable("page") Optional<Integer> page, Model model){
         PostDto postDto = postService.viewPost(id);
@@ -77,18 +89,20 @@ public class PostControl {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
 
         Page<CommentDto> commentDtoList = commentService.findComment(id, pageable);
-        model.addAttribute("commentList", commentDtoList);
-        model.addAttribute("commentDto", new CommentDto() );
+        model.addAttribute("items", commentDtoList);
+        model.addAttribute("maxPage",5);
+        model.addAttribute("commentDto", new CommentDto());
         model.addAttribute("postId",id);
 
         return "/board/view";
     }
+    //게시글 작성 이동
     @GetMapping("/posting")
     public String writeForm(Model model){
         model.addAttribute("postDto", new PostDto());
         return "/board/PostForm";
     }
-
+    //게시글 작성
     @PostMapping("/posting")
     public String writePost(@Valid PostDto postDto, BindingResult bindingResult, Principal principal,@RequestParam("postImgFile") List<MultipartFile> multipartFileList, Model model){
        if(bindingResult.hasErrors()){
@@ -104,14 +118,15 @@ public class PostControl {
        }
         return "redirect:/";
     }
+    //익명 게시글 작성
     @PostMapping("/Aboard/post")
     public String writeAboard(@Valid APostDto aPostDto, BindingResult bindingResult){
         return null;
     }
 
-
-        @PostMapping("{id}/comment")
-    public String writeComment(@PathVariable("id") String postId, @Valid CommentDto commentDto, BindingResult bindingResult){
+    //댓글 작성
+    @PostMapping("{id}/comment")
+    public String writeComment(@PathVariable("id") String postId, @Valid CommentDto commentDto, BindingResult bindingResult,Principal principal){
         long id = Long.parseLong(postId);
         Comment comment = Comment.createComment(commentDto);
         if(bindingResult.hasErrors()){
@@ -122,5 +137,36 @@ public class PostControl {
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
         return "redirect:/board/view/"+id;
+    }
+    //대댓글 작성
+    @PostMapping("{id}/comment/{cId}")
+    public String writeReply(@PathVariable("id") String postId, @PathVariable("cId") String cId, @Valid CommentDto commentDto, BindingResult bindingResult){
+        long id = Long.parseLong(postId);
+        long commentId= Long.parseLong(cId);
+        Comment comment = Comment.createComment(commentDto);
+        if(bindingResult.hasErrors()){
+            return "redirect:/board/view/"+id;
+        }
+        Post post = postService.findPost(id);
+        comment.setPost(post);
+        Comment motherComment = commentService.findCommentId(id).get();
+        comment.setCId(motherComment.getId());
+        commentService.writeComment(comment);
+        post.setCommentCnt(post.getCommentCnt()+1);
+        return "redirect:/board/view/"+id;
+    }
+    //좋아요
+    @PostMapping("/view/{id}/good")
+    public String good(@PathVariable("id") String postId){
+        long id = Long.parseLong(postId);
+        postService.good(id);
+        return "/";
+    }
+    //싫어요
+    @PostMapping("/view/{id}/bad")
+    public String bad(@PathVariable("id") String postId){
+        long id = Long.parseLong(postId);
+        postService.bad(id);
+        return "/";
     }
 }

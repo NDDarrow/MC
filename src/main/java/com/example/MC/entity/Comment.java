@@ -20,17 +20,17 @@ public class Comment extends BaseEntity{
     @JoinColumn(name = "post_id")
     private Post post;
 
+    private Long cId;
+
     private String body;
 
-    int good;
+    int good = 0;
 
-    int bad;
+    int bad = 0;
 
     public static Comment createComment(CommentDto commentDto){
         Comment comment = new Comment();
         comment.setBody(commentDto.getBody());
-        comment.setGood(0);
-        comment.setBad(0);
         return comment;
     }
 }

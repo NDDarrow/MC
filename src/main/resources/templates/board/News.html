@@ -5,6 +5,17 @@
 <th:block layout:fragment="script"></th:block>
 
 <div layout:fragment="content">
-    <h1>News</h1>
-    <a href="/board/posting"></a>
+    <div id="boardWrap">
+        <div class="boardLogo">
+            <img src="@{/images/${board}Logo.jpg}">
+            <p>음악찾기</p>
+        </div>
+
+        <div id="searchForm">
+            <div id="search">
+                <input id="searchBar" type="text" name="query" th:value="${query}">
+                <button id="searchBT"><i id="searchIcon" class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </div>
 </div>

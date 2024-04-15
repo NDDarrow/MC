@@ -1,6 +1,8 @@
 package com.example.MC.control;
 
+import com.example.MC.dto.FollowerDto;
 import com.example.MC.dto.MemberDto;
+import com.example.MC.entity.Follower;
 import com.example.MC.entity.Member;
 import com.example.MC.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -27,6 +26,21 @@ import static org.aspectj.bridge.MessageUtil.error;
 public class MemberControl {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    //팔로우
+    @PostMapping("/Follow/{id}")
+    String addFollower(@PathVariable("id") String mId, Principal principal){
+        long id = Long.parseLong(mId);
+        Member follower = memberService.findByEmail(principal.getName());
+        Member follow = memberService.findById(id).get();
+        FollowerDto followerDto = FollowerDto.createFDto(memberService.findFollowShip(follower.getId(), follow));
+        if(followerDto != null){
+            memberService.deleteFollowShip(followerDto);
+        }else{
+            memberService.makeFollowShip(follower,follow);
+        }
+        return "/";
+    }
 
     //회원가입 이동 완
     @GetMapping("/signUp")
@@ -107,7 +121,7 @@ public class MemberControl {
         return "redirect:/";
     }
 
-
+    //내정보 이동
     @GetMapping("/MyPage")
     public String myPage(Principal principal, Model model){
         String userEmail = principal.getName();
@@ -116,6 +130,7 @@ public class MemberControl {
         model.addAttribute("user",userDto);
         return "member/myPage";
     }
+    //내 정보 수정 이동
     @GetMapping("/MyUpdate")
     public String updateForm( Principal principal, Model model){
         String userEmail = principal.getName();
@@ -124,6 +139,7 @@ public class MemberControl {
         model.addAttribute("memberDto",userDto);
         return "member/myUpdate";
     }
+    //내정보 수정
     @PostMapping("/MyUpdate")
     public String updateInfo(@Valid MemberDto memberDto,BindingResult bindingResult, Model model , Principal principal){
         System.out.println("in");
@@ -138,11 +154,12 @@ public class MemberControl {
         }
         return "redirect:/members/MyPage";
     }
-
+    //회원탈퇴 이동
     @GetMapping("/ReSign")
     public String ReSignForm(Model model){
         return "member/reSign";
     }
+    //회원 탈퇴
     @PostMapping("/ReSign")
     public String ReSign(String email, String pw, Principal principal, Model model){
         if(principal.getName().equals(email)) {

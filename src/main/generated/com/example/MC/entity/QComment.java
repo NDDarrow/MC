@@ -28,6 +28,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final StringPath body = createString("body");
 
+    public final NumberPath<Long> cId = createNumber("cId", Long.class);
+
     //inherited
     public final StringPath createdBy = _super.createdBy;
 

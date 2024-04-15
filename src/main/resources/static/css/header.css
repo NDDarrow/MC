@@ -1,0 +1,141 @@
+헤더 메뉴바 css
+
+*{
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+#header{
+    margin:0 auto;
+    width:1024px;
+    position:relative;
+}
+
+.hmenu {
+    margin:0 auto;
+    width:1024px;
+    text-align: center;
+    position:relative;
+}
+
+ul {
+    list-style: none;
+}
+
+.menu {
+    width:1024px;
+    height: 105px;
+    background-color: aliceblue;
+    padding-top: 40px;
+    margin: auto;
+}
+
+.menu li {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 800;
+    font-size: 25px;
+    letter-spacing: 0.8px;
+    position: relative;
+    left: 0.3px;
+}
+
+.genre {
+    padding-right: 30px;
+}
+
+.findmusic {
+    padding-right: 30px;
+}
+
+.board {
+    padding-right: 30px;
+}
+
+.submenu {
+    text-align: right;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+}
+
+.submenu li {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.menu li, .submenu li {
+    display: inline;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+#boardWrap{
+    width:1024px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+}
+.boardLogo{
+    text-align:center;
+}
+
+.boardLogo img {
+    width: 1024px;
+    height: 167px;
+    margin: 0 auto; /* 가로 중앙 정렬 */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.boardLogo p {
+    color: white;
+    top: 30px;
+}
+#searchForm{
+    width: 1024px;
+    display: flex;
+    margin:30px auto;
+    justify-content: flex-end;
+}
+#search{
+    width:400px;
+    padding:30px 5%;
+    border:2px solid black;
+    border-radius: 30px;
+
+}
+#searchIcon{
+    width:10%;
+}
+#searchBt{
+
+}
+#searchBar{
+    width:80%;
+    border:none;
+}
+.listWrap{
+    margin: 0 auto;
+    width:1024px;
+}
+.bodyList{
+    width:80%;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+}
+.bodyTag{
+    width:15%;
+    padding:10px 0;
+    text-align:center;
+}
+.bodyTag1{
+    width:50%;
+}
+
+
+

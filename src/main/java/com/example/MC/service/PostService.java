@@ -36,10 +36,12 @@ public class PostService {
     //글쓰기 메서드
     public void writePost(Post post, List<MultipartFile> multipartFileList) throws Exception{
         postRepo.save(post);
-        for( int i =0; i< multipartFileList.size(); i++){
-            PostImg postImg = new PostImg();
-            postImg.setPost(post);
-            postImgService.savePostImg(postImg,multipartFileList.get(i));
+        if(multipartFileList !=null) {
+            for (int i = 0; i < multipartFileList.size(); i++) {
+                PostImg postImg = new PostImg();
+                postImg.setPost(post);
+                postImgService.savePostImg(postImg, multipartFileList.get(i));
+            }
         }
     }
     //게시판 입장 페이징 메서드
@@ -62,6 +64,7 @@ public class PostService {
             postImgDtoList.add(postImgDto);
         }
         Post post = postRepo.findById(postId).get();
+        post.setView(post.getView()+1);
         Member user = memberRepo.findByEmail(post.getCreatedBy());
         PostDto postDto = PostDto.of(post);
         postDto.setCreatedBy(user.getUserNick());
@@ -113,8 +116,27 @@ public class PostService {
         }
         return newsList;
     }
-    public Post findPost(Long id){
+    public Post findPost(long id){
         Post post = postRepo.findById(id).get();
         return post;
+    }
+    public void good(long id){
+        Post post = postRepo.findById(id).get();
+        post.setGood(post.getGood()+1);
+    }
+    public void bad(long id){
+        Post post = postRepo.findById(id).get();
+        post.setBad(post.getBad()+1);
+    }
+    public Page<PostDto> searchPost(String query, Pageable pageable){
+        Page<Post> postPage =  postRepo.findByTitleContaining(query, pageable);
+        List<PostDto> postDtoPage = new ArrayList<PostDto>();
+        for(Post post : postPage){
+            Member user = memberRepo.findByEmail(post.getCreatedBy());
+            PostDto postDto = PostDto.of(post);
+            postDto.setCreatedBy(user.getUserNick());
+            postDtoPage.add(postDto);
+        }
+        return new PageImpl<>(postDtoPage, pageable, postPage.getTotalPages());
     }
 }

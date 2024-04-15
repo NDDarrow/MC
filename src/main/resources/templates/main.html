@@ -20,6 +20,11 @@
     <div>
         <a href="/members/MyPage">내정보</a>
     </div>
+    <form method="get" action="/search">
+        <input type="text" name="query" th:value="${query}">
+        <button>search</button>
+    </form>
+
 
 </div>
 </html>

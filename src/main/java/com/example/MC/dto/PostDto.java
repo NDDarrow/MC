@@ -36,6 +36,12 @@ public class PostDto {
 
     private List<Long> postImgIds =new ArrayList<>();
 
+    private int good;
+
+    private int bad;
+    private int view;
+    private int commentCnt;
+
     public static PostDto of(Post post){
         PostDto postDto = new PostDto();
         postDto.setId(post.getId());
@@ -43,6 +49,10 @@ public class PostDto {
         postDto.setBody(post.getBody());
         postDto.setTitle(post.getTitle());
         postDto.setRegTime(post.getRegTime());
+        postDto.setGood(post.getGood());
+        postDto.setBad(post.getBad());
+        postDto.setView(post.getView());
+        postDto.setCommentCnt(post.getCommentCnt());
         return postDto;
     }
 }

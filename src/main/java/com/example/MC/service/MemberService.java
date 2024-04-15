@@ -1,7 +1,11 @@
 package com.example.MC.service;
 
+import com.example.MC.dto.FollowerDto;
 import com.example.MC.dto.MemberDto;
+import com.example.MC.entity.Follower;
 import com.example.MC.entity.Member;
+import com.example.MC.repository.FollowerRepo;
+
 import com.example.MC.repository.MemberRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -13,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.security.Principal;
+import java.util.Optional;
 
 import static com.example.MC.entity.Member.resetPw;
 
@@ -23,7 +27,26 @@ import static com.example.MC.entity.Member.resetPw;
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
     private final MemberRepo memberRepo;
+    private final FollowerRepo followerRepo;
 
+    public void makeFollowShip(Member user, Member member){
+        Follower follower = new Follower();
+        follower.setMember(member);
+        follower.setUserId(user.getId());
+        followerRepo.save(follower);
+    }
+    public void deleteFollowShip(FollowerDto followerDto){
+        Follower follower = followerRepo.findByUserIdAndMemberId(followerDto.getUserId(),followerDto.getFollowerId());
+        followerRepo.delete(follower);
+    }
+    public Follower findFollowShip(long user ,Member follower){
+        Follower follower1 = followerRepo.findByUserIdAndMemberId(user, follower.getId());
+        return follower1;
+
+    }
+    public Optional<Member> findById(long id){
+        return memberRepo.findById(id);
+    }
 
     public void saveMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
         Member member = Member.createMember(memberDto, passwordEncoder);

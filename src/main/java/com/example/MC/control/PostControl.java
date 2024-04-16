@@ -35,18 +35,19 @@ public class PostControl {
     private final MemberService memberService;
     private final CommentService commentService;
     //장르 게시판 이동
-    @GetMapping(value = {"/Genre", "/Genre/{page}"})
-    public String genreBoard(@PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/Genre/{genre}", "/Genre/{genre}/{page}"})
+    public String genreBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<PostDto> genreList = postService.getPostList(BoardType.ROCK, pageable);
+        // 장르에 맞는 글 리스트를 가져오는 서비스 메서드를 호출합니다
+        Page<PostDto> genreList = postService.getPostList(BoardType.valueOf(genre), pageable);
         model.addAttribute("items", genreList);
         model.addAttribute("maxPage",5);
         model.addAttribute("board","genre");
-        model.addAttribute("itemSearchDto", new ItemSearchDto() );
         return "/board/Genre";
     }
+
     //음악찾기 게시판 이동
-        @GetMapping(value = {"/FindMusic","/FindMusic/{page}"})
+    @GetMapping(value = {"/FindMusic","/FindMusic/{page}"})
     public String FmBoard(@PathVariable(name="page",required = false) Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> FMList = postService.getPostList(BoardType.FINDMUSIC, pageable);
@@ -54,30 +55,27 @@ public class PostControl {
         model.addAttribute("items", FMList);
         model.addAttribute("maxPage",5);
         model.addAttribute("board","findMusic");
-        model.addAttribute("itemSearchDto", new ItemSearchDto() );
         return "/board/FindMusic";
     }
     //자유게시판 이동
-    @GetMapping(value = {"/FreeBoard", "/FreeBoard/{page}"})
-    public String FreeBoard(@PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/FreeBoard/{genre}", "/FreeBoard/{genre}/{page}"})
+    public String FreeBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<PostDto> FreeList = postService.getPostList(BoardType.FREEBOARD, pageable);
+        Page<PostDto> FreeList = postService.getPostList(BoardType.valueOf(genre), pageable);
 
         model.addAttribute("items", FreeList);
         model.addAttribute("maxPage",5);
         model.addAttribute("board","freeBoard");
-        model.addAttribute("itemSearchDto", new ItemSearchDto() );
         return "/board/Freeboard";
     }
     //뉴스게시판 이동
-    @GetMapping(value = {"/News", "/News/{page}"})
-    public String newsBoard(@PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/News/{genre}", "/News/{genre}/{page}"})
+    public String newsBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<PostDto> NewsList = postService.getPostList(BoardType.KNEWS, pageable);
+        Page<PostDto> NewsList = postService.getPostList(BoardType.valueOf(genre), pageable);
 
         model.addAttribute("items", NewsList);
         model.addAttribute("maxPage",5);
-        model.addAttribute("itemSearchDto", new ItemSearchDto() );
         model.addAttribute("board","news");
         return "/board/News";
     }

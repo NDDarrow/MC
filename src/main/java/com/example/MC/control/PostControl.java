@@ -79,6 +79,16 @@ public class PostControl {
         model.addAttribute("board","news");
         return "/board/News";
     }
+    @GetMapping(value = {"/SC/{genre}", "/SC/{genre}/{page}"})
+    public String SCBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model) {
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<PostDto> SCList = postService.getPostList(BoardType.valueOf(genre), pageable);
+
+        model.addAttribute("items", SCList);
+        model.addAttribute("maxPage", 5);
+        model.addAttribute("board", "SC");
+        return "/board/SC";
+    }
     //게시글 보기
     @GetMapping(value = {"/view/{id}","/view/{id}/{page}"})
     public String viewPost(@PathVariable("id") long id,@PathVariable("page") Optional<Integer> page, Model model){

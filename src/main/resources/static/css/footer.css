@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#fUl{
+    display:inline-block;
+    margin:50px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+#fUl li {
+    display: inline;
+    color: #575050;
+    border-right: 1px solid gray;
+    padding:0 20px;
+}
+#fUl li:last-child{
+    border:none;
+}
+
+.import {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+}
+
+.nImport {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+}

@@ -5,26 +5,53 @@
 <th:block layout:fragment="script"></th:block>
 
 <div layout:fragment="content">
-    <h1>main ready?</h1>
-    <h2>HELLO WOARD!</h2>
-    <a href="/members/signUp">회원가입</a>
-    <div>
-        <a href="/members/login">로그인</a>
+    <div id="boardWrap">
+        <div class="boardLogo">
+            <img th:src="@{/image/__${board}__Logo.jpg}">
+            <p>다양한 장르를 사랑하는 사람들끼리 쉽게 소통할 수 있도록 만든 <br> 음악 커뮤니티 사이트입니다.</p>
+        </div>
+        <div id="mSearchForm">
+            <div id="mSearch">
+                <form method="get" action="/search">
+                    <input id="mSearchBar" type="text" name="query" th:value="${query}">
+                    <button id="mSearchBT"><i id="mSearchIcon" class="bi bi-search"></i></button>
+                </form>
+            </div>
+        </div>
+        <div id="box-content">
+            <div class="box">
+                <p>음악뉴스</p>
+                <ul class="boxList" th:each="news, stat :${news}">
+                    <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
+                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${news.id}}" th:text="${news.title}"></a></li>
+                    <li class="boxTag" th:text="${news.view}"></li>
+                </ul>
+            </div>
+            <div class="box">
+                <p>히트글</p>
+                <ul class="boxList" th:each="hit, stat :${hit}">
+                    <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
+                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${hit.id}}" th:text="${hit.title}"></a></li>
+                    <li class="boxTag" th:text="${hit.good}"></li>
+                </ul>
+            </div>
+            <div class="box">
+                <p>조회 많은 글</p>
+                <ul class="boxList" th:each="view, stat :${view}">
+                    <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
+                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${view.id}}" th:text="${view.title}"></a></li>
+                    <li class="boxTag" th:text="${view.view}"></li>
+                </ul>
+            </div>
+            <div class="box">
+                <p>댓글 많은 글</p>
+                <ul class="boxList" th:each="comment, stat :${comment}">
+                    <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
+                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${comment.id}}" th:text="${comment.title}"></a></li>
+                    <li class="boxTag" th:text="${comment.commentCnt}"></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div>
-        <a href="/members/logout">로그아웃</a>
-    </div>
-    <div>
-        <a href="/members/IdFind">아이디찾기</a>
-    </div>
-    <div>
-        <a href="/members/MyPage">내정보</a>
-    </div>
-    <form method="get" action="/search">
-        <input type="text" name="query" th:value="${query}">
-        <button>search</button>
-    </form>
-
-
 </div>
 </html>

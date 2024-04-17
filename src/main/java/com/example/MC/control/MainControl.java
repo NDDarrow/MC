@@ -32,6 +32,7 @@ public class MainControl {
         model.addAttribute("view", viewList);
         model.addAttribute("comment", commentList);
         model.addAttribute("news", newsList);
+        model.addAttribute("board", "main");
         return "main";
     }
     @GetMapping(value = {"/search", "search/{page}"})

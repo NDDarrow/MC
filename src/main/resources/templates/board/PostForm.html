@@ -10,10 +10,14 @@
         <form th:object="${postDto}" method="post" action="/board/posting" enctype="multipart/form-data">
             <div>
                 <select th:field="*{board}">
+                    <option value="">게시판 선택</option>
                     <option th:each="board : ${T(com.example.MC.constant.BoardType).values()}"
                             th:if="${board != T(com.example.MC.constant.BoardType).KNEWS
                         and board != T(com.example.MC.constant.BoardType).GNEWS
-                        and board != T(com.example.MC.constant.BoardType).FESTIVAL}"
+                        and board != T(com.example.MC.constant.BoardType).FESTIVAL
+                        and board != T(com.example.MC.constant.BoardType).NOTICE
+                        and board != T(com.example.MC.constant.BoardType).QA
+                        and board != T(com.example.MC.constant.BoardType).REPORT}"
                             th:value="${board}" th:text="${board}">
                     </option>
                 </select>

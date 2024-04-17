@@ -1,9 +1,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="footer" id="footer"></div>
-<footer class="font-smal cyan darken-3">
-    <div class="text-center py-3">
-        2024 Weapon Shopping Mall Website
-    </div>
-</footer>
-
+<div th:fragment="footer" id="footer">
+    <footer id="fMenu">
+        <ul id="fUl">
+            <li class="import"><a href="/board/SC/NOTICE">공지사항</a></li>
+            <li class="import"><a href="/board/SC/QA">문의사항</a></li>
+            <li class="import"><a href="/board/SC/REPORT">게시글 신고</a></li>
+            <li class="nImport">이용약관</li>
+            <li class="nImport">개인정보처리방침</li>
+            <li class="nImport">이메일주소 무단 수집 거부</li>
+        </ul>
+    </footer>
+</div>
 </html>

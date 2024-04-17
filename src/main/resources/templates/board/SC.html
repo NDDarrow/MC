@@ -1,16 +1,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragment/basic}">
+<!--<head>-->
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+<!--</head>-->
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/News.css}">
+    <link rel="stylesheet" th:href="@{/css/SC.css}">
 </th:block>
-<th:block layout:fragment="script"></th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/SC.js}"></script>
+</th:block>
 
 <div layout:fragment="content">
     <div id="boardWrap">
         <div class="boardLogo">
             <img th:src="@{/image/__${board}__Logo.jpg}">
-            <p>음악찾기</p>
+            <p>장르별</p>
         </div>
-
         <div id="searchForm">
             <div id="search">
                 <form method="get" action="/search">
@@ -23,9 +28,9 @@
 
         <div class="category">
             <ul>
-                <li class="KNEWS off"><a href="/board/News/KNEWS">국내뉴스</a></li>
-                <li class="GNEWS off"><a href="/board/News/GNEWS">해외뉴스</a></li>
-                <li class="FESTIVAL off"><a href="/board/News/FESTIVAL">행사정보</a></li>
+                <li class="NOTICE off"><a href="/board/SC/NOTICE">공지사항</a></li>
+                <li class="QA off"><a href="/board/SC/QA">문의사항</a></li>
+                <li class="REPORT off"><a href="/board/SC/REPORT">게시글 신고</a></li>
             </ul>
         </div>
 
@@ -34,13 +39,13 @@
                 <li class="bodyTag1">제목</li>
                 <li class="bodyTag">작성자</li>
                 <li class="bodyTag">작성일</li>
-                <li class="bodyTag">히트수</li>
+                <li class="bodyTag">조회수</li>
             </ul>
             <ul class="bodyList" th:each="item, stat :${items.getContent()}">
                 <li class="bodyTag1"><a th:href="@{'/board/view/' + ${item.id}}" th:text="${item.title}"></a></li>
                 <li class="bodyTag" th:text="${item.createdBy}">작성자</li>
                 <li class="bodyTag" th:text="${item.regTime}">작성일</li>
-                <li class="bodyTag" th:text="${item.good}">히트수</li>
+                <li class="bodyTag" th:text="${item.view}">히트수</li>
             </ul>
 
             <div th:with="start=${(items.number/maxPage)*maxPage + 1} , end=(${(items.totalPages ==0 ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1) : items.totalPages) ) } )">

@@ -18,7 +18,7 @@
                     <button id="searchBT"><i id="searchIcon" class="bi bi-search"></i></button>
                 </form>
             </div>
-            <button id="posting">글쓰기</button>
+            <button id="posting"><a href="/board/posting">글쓰기</a></button>
         </div>
 
         <div class="category">
@@ -41,6 +41,26 @@
                 <li class="bodyTag" th:text="${item.regTime}">작성일</li>
                 <li class="bodyTag" th:text="${item.good}">히트수</li>
             </ul>
+
+            <div th:with="start=${(items.number/maxPage)*maxPage + 1} , end=(${(items.totalPages ==0 ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1) : items.totalPages) ) } )">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${items.number eq 0} ? 'disabled' : '' ">
+                        <a th:href="@{'/board/FindMusic/'+${items.number-1}}" class="page-link" aria-label="Prev">
+                            <span aria-hidden="true">Prev</span>
+                        </a>
+                    </li>
+
+                    <li th:each="page : ${#numbers.sequence(start,end)}" th:classappend="${items.number eq page-1} ? 'active' : '' " class="page-item">
+                        <a th:href="@{'/board/FindMusic/'+${page-1}}" th:text="${page}" class="page-link"></a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled' : ''">
+                        <a th:href="@{'/board/FindMusic/'+${items.number+1}}" aria-label="Next" class="page-link">
+                            <span aria-hidden="true">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

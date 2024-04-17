@@ -1,0 +1,38 @@
+/* 글쓰기 css */
+
+.content {
+    width: 1020px;
+    height: 744px;
+    border: 2px solid #bfbfbf;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin-top: 10px;
+    position: relative;
+    left: 450px;
+}
+
+
+.dropdown {
+    height: 30px;
+    border-radius: 5px;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    outline: none;
+    position: relative;
+    top: 20px;
+    left: 15px;
+}
+
+.placeholder {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.posting-title {
+    border: none;
+    position: relative;
+    top: 30px;
+    left: 30px;
+}

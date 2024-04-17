@@ -1,8 +1,10 @@
-장르별 css
+/* 장르별 css */
+
 body {
     overflow-x: hidden;
 }
-.category{
+
+.category {
     text-align:center;
     margin-bottom:50px;
 }

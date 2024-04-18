@@ -25,12 +25,14 @@
                <input th:field="*{title}" placeholder="제목을 입력해 주세요." class="posting-title">
             </div>
             <hr>
+            <label for="postImgFile">
+                <div><i class="bi bi-image"></i></div>
+            </label>
+            <input type="file"  id="postImgFile" name="postImgFile" accept="image/*">
             <div>
-                <textarea th:field="*{body}" placeholder="본문"></textarea>
+                <input th:field="*{body}" placeholder="내용을 입력해 주세요." class="posting-content"></input>
             </div>
-            <div>
-                <input type="file" name="postImgFile" accept="image/*">
-            </div>
+
             <button>등록</button>
         </form>
     </div>

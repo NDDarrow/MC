@@ -1,12 +1,10 @@
-/* 글쓰기 css */
-
 .content {
     width: 1020px;
-    height: 744px;
-    border: 2px solid #bfbfbf;
+    height: 795px;
+    border: 2px solid #dcdcdc;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
-    margin-top: 10px;
+    margin-top: 20px;
     position: relative;
     left: 450px;
 }
@@ -20,8 +18,8 @@
     font-size: 16px;
     outline: none;
     position: relative;
-    top: 20px;
-    left: 15px;
+    top: 25px;
+    left: 30px;
 }
 
 .placeholder {
@@ -30,9 +28,71 @@
     font-size: 16px;
 }
 
+input[type="text"]:first-child {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #a7a7a7;
+}
+
 .posting-title {
+    width: 960px;
     border: none;
     position: relative;
-    top: 30px;
+    top: 55px;
     left: 30px;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #dcdcdc;
+    outline: none;
+    background-color: transparent;
+}
+
+hr {
+    position: relative;
+    top: 60px;
+    color: #dcdcdc;
+}
+
+.bi-image {
+    font-size: 40px;
+    position: absolute;
+    top: 120px;
+    left: 25px;
+    color: #bebebe;
+}
+
+.bi-image:hover {
+    cursor: pointer;
+}
+
+#postImgFile {
+    display: none;
+}
+
+.posting-content {
+    width: 965px;
+    height: 530px;
+    background-color: transparent;
+    position: relative;
+    top: 125px;
+    left: 25px;
+    outline: none;
+    border: 2px solid #dcdcdc;
+}
+
+button {
+    width: 85px;
+    height: 60px;
+    position: relative;
+    top: 135px;
+    left: 905px;
+    border-radius: 30px;
+    background-color: black;
+    color: white;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    border: 0;
 }

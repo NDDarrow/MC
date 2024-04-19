@@ -8,9 +8,9 @@
 <th:block layout:fragment="script"></th:block>
 
 <div layout:fragment="content" class="content">
-    <div>
+    <div id="postingBox">
         <form th:object="${postDto}" method="post" action="/board/posting" enctype="multipart/form-data">
-            <div>
+            <div class="dropdownBox">
                 <select th:field="*{board}" class="dropdown">
                     <option value="" class="placeholder" selected hidden>카테고리를 선택해 주세요.</option>
                     <option th:each="board : ${T(com.example.MC.constant.BoardType).values()}"
@@ -21,16 +21,18 @@
                     </option>
                 </select>
             </div>
-            <div>
+            <div class="titleBox">
                <input th:field="*{title}" placeholder="제목을 입력해 주세요." class="posting-title">
             </div>
             <hr>
-            <label for="postImgFile">
-                <div><i class="bi bi-image"></i></div>
-            </label>
-            <input type="file"  id="postImgFile" name="postImgFile" accept="image/*">
-            <div>
-                <input th:field="*{body}" placeholder="내용을 입력해 주세요." class="posting-content"></input>
+            <div imgBox>
+                <label for="postImgFile">
+                    <div><i class="bi bi-image"></i></div>
+                </label>
+                <input type="file"  id="postImgFile" name="postImgFile" accept="image/*">
+            </div>
+            <div class="bodyBox">
+                <textarea th:field="*{body}" placeholder="내용을 입력해 주세요." class="posting-content"></textarea>
             </div>
 
             <button>등록</button>

@@ -1,0 +1,85 @@
+#postingBox {
+    width: 1024px;
+    border: 2px solid #dcdcdc;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding:50px;
+}
+
+.dropdownBox{
+    margin:30px 0;
+}
+.dropdown {
+    height: 30px;
+    border-radius: 5px;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    outline: none;
+}
+.placeholder {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+input[type="text"]:first-child {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #a7a7a7;
+}
+
+.posting-title {
+    width: 100%;
+    border: none;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #bebebe;
+    outline: none;
+    background-color: transparent;
+}
+
+hr {
+    color: #dcdcdc;
+}
+
+.bi-image {
+    font-size: 40px;
+    color: #bebebe;
+}
+
+.bi-image:hover {
+    cursor: pointer;
+}
+
+#postImgFile {
+    display: none;
+}
+
+.posting-content {
+    width: 100%;
+    height: 530px;
+    background-color: transparent;
+    outline: none;
+    border: 2px solid #dcdcdc;
+    resize: none;
+}
+
+button {
+    margin:30px;
+    width: 85px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: black;
+    color: white;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    border: 0;
+    position:relative;
+    left:805px;
+}

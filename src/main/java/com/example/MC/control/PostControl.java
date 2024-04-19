@@ -117,9 +117,8 @@ public class PostControl {
            return "/posting";
        }
         Member user =memberService.findByEmail(principal.getName());
-        Post post = Post.createPost(postDto,user);
        try{
-           postService.writePost(post, multipartFileList);
+           postService.writePost(postDto, user, multipartFileList);
        }catch(Exception e){
            model.addAttribute("errorMessage" ,"게시글 저장 중 오류가 발생했습니다");
            return "/posting";

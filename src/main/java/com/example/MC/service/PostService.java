@@ -34,13 +34,17 @@ public class PostService {
     private final PostImgRepo postImgRepo;
     private final MemberRepo memberRepo;
     //글쓰기 메서드
-    public void writePost(Post post, List<MultipartFile> multipartFileList) throws Exception{
+    public void writePost(PostDto postDto,Member user, List<MultipartFile> multipartFileList) throws Exception{
+        Post post = Post.createPost(postDto, user);
         postRepo.save(post);
-        if(multipartFileList !=null) {
+        if(!multipartFileList.isEmpty()) {
             for (int i = 0; i < multipartFileList.size(); i++) {
-                PostImg postImg = new PostImg();
-                postImg.setPost(post);
-                postImgService.savePostImg(postImg, multipartFileList.get(i));
+                MultipartFile file = multipartFileList.get(i);
+                if(!file.isEmpty()) {
+                    PostImg postImg = new PostImg();
+                    postImg.setPost(post);
+                    postImgService.savePostImg(postImg, file);
+                }
             }
         }
     }

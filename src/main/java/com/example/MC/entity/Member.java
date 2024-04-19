@@ -55,8 +55,9 @@ public class Member extends BaseEntity{
         member.setUserNick(memberDto.getUserNick());
         member.setName(memberDto.getName());
         member.setTell(memberDto.getTell());
-        member.setAddr1(member.getAddr1());
-        member.setAddr2(member.getAddr2());
+        member.setZipCode(memberDto.getZipCode());
+        member.setAddr1(memberDto.getAddr1());
+        member.setAddr2(memberDto.getAddr2());
         member.setRole(Role.USER);
         return member;
     }

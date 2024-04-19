@@ -1,5 +1,6 @@
 package com.example.MC.service;
 
+import com.example.MC.dto.PostImgDto;
 import com.example.MC.entity.PostImg;
 import com.example.MC.repository.PostImgRepo;
 import lombok.RequiredArgsConstructor;

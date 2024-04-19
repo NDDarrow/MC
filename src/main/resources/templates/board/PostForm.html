@@ -5,11 +5,11 @@
 <th:block layout:fragment="script"></th:block>
 
 <div layout:fragment="content">
-    <h1>PostForm</h1>
-    <div>
+    <div id="postingBox">
         <form th:object="${postDto}" method="post" action="/board/posting" enctype="multipart/form-data">
-            <div>
-                <select th:field="*{board}">
+            <div class="dropdownBox">
+                <select th:field="*{board}" class="dropdown">
+                    <option value="" class="placeholder" selected hidden>카테고리를 선택해 주세요.</option>
                     <option value="">게시판 선택</option>
                     <option th:each="board : ${T(com.example.MC.constant.BoardType).values()}"
                             th:if="${board != T(com.example.MC.constant.BoardType).KNEWS
@@ -22,14 +22,18 @@
                     </option>
                 </select>
             </div>
-            <div>
-               <input th:field="*{title}" placeholder="제목">
+            <div class="titleBox">
+                <input th:field="*{title}" placeholder="제목을 입력해 주세요." class="posting-title">
             </div>
-            <div>
-                <textarea th:field="*{body}" placeholder="본문"></textarea>
+            <hr>
+            <div class="imgBox">
+                <label for="postImgFile">
+                    <div><i class="bi bi-image"></i></div>
+                </label>
+                <input type="file" multiple="multiple" id="postImgFile" name="postImgFile" accept="image/*">
             </div>
-            <div>
-                <input type="file" name="postImgFile" accept="image/*">
+            <div class="bodyBox">
+                <textarea th:field="*{body}" placeholder="내용을 입력해 주세요." class="posting-content"></textarea>
             </div>
             <button>등록</button>
         </form>

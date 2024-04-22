@@ -12,6 +12,14 @@
         commentDiv.style.display = 'none';
         }
     }
+    function toggleReply(element) {
+        var commentDiv = element.parentElement.nextElementSibling.querySelector(".comment");
+        if (commentDiv.style.display == "none") {
+            commentDiv.style.display = "block";
+        } else {
+            commentDiv.style.display = "none";
+        }
+    }
     </script>
 </th:block>
 
@@ -34,9 +42,9 @@
             </div>
         </div>
             <hr>
-        <div th:if="${post.postImgDtoList.size() != 0}">
+        <div class="image-box" th:if="${post.postImgDtoList.size() != 0}">
             <div th:each="postImg : ${post.postImgDtoList}">
-                <img th:src="${postImg.imgUrl}" style="width: 300px; height: 300px;">
+                <img th:src="${postImg.imgUrl}">
             </div>
         </div>
         <div class="content" th:text="${post.body}"></div>
@@ -77,14 +85,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="comment-head-sub">
-                    <div th:text="${comments.regTime}"></div>
-                    <div class="click-comment-icon" onclick="toggleComment()">
-                        <i class="bi bi-chat-dots"></i>
+                <div>
+                    <div class="comment-head-sub">
+                        <div th:text="${comments.regTime}"></div>
+                        <div class="click-reply-icon" onclick="toggleReply(this)">
+                            <i class="bi bi-chat-dots"></i>
+                        </div>
                     </div>
                     <div class="comment" style="display:none;">
-                        <form method="post" th:action="@{'/board/' + ${comments.id} + '/comment'}">
+                        <form method="post" th:action="@{'/board/' + ${comments.id} + '/reply'}">
                             <textarea name="comment-body" id="comment-body" placeholder="내용을 입력해 주세요."></textarea>
+                            <input type="hidden" th:value="${comments.id}">
                             <button type="submit">등록</button>
                         </form>
                     </div>
@@ -95,6 +106,4 @@
 
             </div>
         </div>
-
-<!--    댓글-->
 </div>

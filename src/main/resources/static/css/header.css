@@ -30,6 +30,9 @@ ul {
     background-color: aliceblue;
     padding-top: 40px;
     margin: auto;
+    display:flex;
+    justify-content:center;
+    gap:50px;
 }
 
 .menu li {
@@ -40,19 +43,6 @@ ul {
     position: relative;
     left: 0.3px;
 }
-
-.genre {
-    padding-right: 30px;
-}
-
-.findMusic {
-    padding-right: 30px;
-}
-
-.board {
-    padding-right: 30px;
-}
-
 .submenu {
     text-align: right;
     position: absolute;

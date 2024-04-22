@@ -4,6 +4,8 @@ import com.example.MC.dto.FollowerDto;
 import com.example.MC.dto.MemberDto;
 import com.example.MC.entity.Follower;
 import com.example.MC.entity.Member;
+import com.example.MC.entity.Post;
+import com.example.MC.repository.PostRepo;
 import com.example.MC.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,13 +28,15 @@ import static org.aspectj.bridge.MessageUtil.error;
 public class MemberControl {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final PostRepo postRepo;
 
     //팔로우
     @PostMapping("/Follow/{id}")
     String addFollower(@PathVariable("id") String mId, Principal principal){
         long id = Long.parseLong(mId);
+        Post post = postRepo.findById(id).get();
         Member follower = memberService.findByEmail(principal.getName());
-        Member follow = memberService.findById(id).get();
+        Member follow = memberService.findById(post.getMember().getId()).get();
         FollowerDto followerDto = FollowerDto.createFDto(memberService.findFollowShip(follower.getId(), follow));
         if(followerDto != null){
             memberService.deleteFollowShip(followerDto);

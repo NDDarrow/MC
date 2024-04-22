@@ -2,38 +2,99 @@
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/view.css}">
 </th:block>
-<th:block layout:fragment="script"></th:block>
+<th:block layout:fragment="script">
+    <script>
+    function toggleComment() {
+        var commentDiv = document.querySelector('.comment');
+        if (commentDiv.style.display === 'none') {
+        commentDiv.style.display = 'block';
+        }else {
+        commentDiv.style.display = 'none';
+        }
+    }
+    </script>
+</th:block>
 
 <div layout:fragment="content">
 <!--    게시글 시작-->
-    <div th:if="${not #lists.isEmpty(post)}">
-        <div>
-            <div th:text="${post.title}"></div>
-            <div th:text="${post.body}"></div>
-            <div th:text="${post.createdBy}"></div>
+    <div id="viewBox" th:if="${not #lists.isEmpty(post)}">
+        <div class="title" th:text="${post.title}"></div>
+        <div class="sub">
+            <div th:text="${post.nick}"></div>
             <div th:text="${post.regTime}"></div>
+            <div th:text="${post.view}"></div>
         </div>
+        <div th:if="${principal != null}">
+            <div class="title-icon" th:if="${post.createdBy eq principal}">
+                <a th:href="@{'/board/view/' + ${post.id} + '/update'}"><i class="bi bi-pencil-fill"></i></a>
+                <a th:href="@{'/board/view/' + ${post.id} + '/delete'}"><i class="bi bi-trash3-fill"></i></a>
+            </div>
+            <div class="title-icon" th:unless="${post.createdBy eq principal}">
+                <a th:href="@{'/member/Follow/' + ${post.id}}"><i class="bi bi-person-plus"></i></a>
+            </div>
+        </div>
+            <hr>
         <div th:if="${post.postImgDtoList.size() != 0}">
             <div th:each="postImg : ${post.postImgDtoList}">
                 <img th:src="${postImg.imgUrl}" style="width: 300px; height: 300px;">
-                <div th:text="${postImg.oriImgName}"></div>
-                <div th:text="${postImg.imgUrl}"></div>
             </div>
+        </div>
+        <div class="content" th:text="${post.body}"></div>
+        <div class="hit-floop">
+            <a th:href="@{'/board/view/' + ${post.id} + '/good'}"><i class="bi bi-hand-thumbs-up"><span th:text="${post.good}"></span></i></a>
+            <a th:href="@{'/board/view/' + ${post.id} + '/bad'}"><i class="bi bi-hand-thumbs-down"><span th:text="${post.bad}"></span></i></a>
+        </div>
+        <div class="click-comment-icon" onclick="toggleComment()">
+            <i class="bi bi-chat-dots"></i>
+        </div>
+        <div class="comment" style="display:none;">
+            <form method="post" th:action="@{'/board/' + ${post.id} + '/comment'}">
+                <textarea name="body" id="body" placeholder="내용을 입력해 주세요."></textarea>
+                <button type="submit">등록</button>
+            </form>
         </div>
     </div>
 <!--    게시글 끝-->
-<!--    댓글-->
-    <div th:if="${not #lists.isEmpty(items)}">
-        <div th:each="comments : ${items}">
-            <div th:text="${comments.writer}"></div>
-            <div th:text="${comments.body}"></div>
-            <div th:text="${comments.regTime}"></div>
+        <div th:if="${not #lists.isEmpty(items)}">
+            <div class="comment-form" th:each="comments : ${items}">
+                <div class="comment-head">
+                    <div class="comment-head-left">
+                        <div th:text="${comments.writer}"></div>
+                        <div th:if="${principal != null}">
+                            <div class="title-icon" th:if="${comments.createdBy eq principal}">
+                                <a th:href="@{'/board/view/' + ${comments.id} + '/update'}"><i class="bi bi-pencil-fill"></i></a>
+                                <a th:href="@{'/board/view/' + ${comments.id} + '/delete'}"><i class="bi bi-trash3-fill"></i></a>
+                            </div>
+                            <div class="title-icon" th:unless="${comments.createdBy eq principal}">
+                                <a th:href="@{'/member/Follow/' + ${comments.id}}"><i class="bi bi-person-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-head-right">
+                        <div class="hit-floop">
+                            <a th:href="@{'/board/view/' + ${post.id} + '/good'}"><i class="bi bi-hand-thumbs-up"><span th:text="${post.good}"></span></i></a>
+                            <a th:href="@{'/board/view/' + ${post.id} + '/bad'}"><i class="bi bi-hand-thumbs-down"><span th:text="${post.bad}"></span></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment-head-sub">
+                    <div th:text="${comments.regTime}"></div>
+                    <div class="click-comment-icon" onclick="toggleComment()">
+                        <i class="bi bi-chat-dots"></i>
+                    </div>
+                    <div class="comment" style="display:none;">
+                        <form method="post" th:action="@{'/board/' + ${comments.id} + '/comment'}">
+                            <textarea name="comment-body" id="comment-body" placeholder="내용을 입력해 주세요."></textarea>
+                            <button type="submit">등록</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="comment-body">
+                    <div th:text="${comments.body}"></div>
+                </div>
+
+            </div>
         </div>
-    </div>
-    <form th:object="${commentDto}" method="post" th:action="@{'/board/' + ${postId} + '/comment'}">
-        <input type="text" th:field="*{body}">
-        <button>작성</button>
-    </form>
 
-
+<!--    댓글-->
 </div>

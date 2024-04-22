@@ -30,6 +30,7 @@ public class PostDto {
 
     private LocalDateTime regTime;
 
+    private String nick;
     private String createdBy;
 
     private List<PostImgDto> postImgDtoList = new ArrayList<>();
@@ -52,6 +53,8 @@ public class PostDto {
         postDto.setGood(post.getGood());
         postDto.setBad(post.getBad());
         postDto.setView(post.getView());
+        postDto.setNick(post.getNick());
+        postDto.setCreatedBy(post.getCreatedBy());
         postDto.setCommentCnt(post.getCommentCnt());
         return postDto;
     }

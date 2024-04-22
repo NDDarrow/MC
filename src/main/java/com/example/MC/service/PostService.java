@@ -69,9 +69,7 @@ public class PostService {
         }
         Post post = postRepo.findById(postId).get();
         post.setView(post.getView()+1);
-        Member user = memberRepo.findByEmail(post.getCreatedBy());
         PostDto postDto = PostDto.of(post);
-        postDto.setCreatedBy(user.getUserNick());
         postDto.setPostImgDtoList(postImgDtoList);
         return postDto;
     }
@@ -145,5 +143,10 @@ public class PostService {
     }
     public void updatePost(Post post){
         postRepo.save(post);
+    }
+
+    public void deletePost(long id){
+        Post post = postRepo.findById(id).get();
+        postRepo.delete(post);
     }
 }

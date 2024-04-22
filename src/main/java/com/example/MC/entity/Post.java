@@ -21,6 +21,8 @@ public class Post extends BaseEntity{
     @Column(nullable = false)
     private BoardType board;
 
+    @Column
+    private String nick;
     @Column(nullable = false, length = 40)
     private String title;
 
@@ -45,6 +47,7 @@ public class Post extends BaseEntity{
         post.setBoard(postDto.getBoard());
         post.setTitle(postDto.getTitle());
         post.setBody(postDto.getBody());
+        post.setNick(postDto.getNick());
         post.setMember(member);
         return post;
     }

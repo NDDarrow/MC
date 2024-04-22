@@ -7,10 +7,18 @@
                 <li class="board"><a href="/board/FreeBoard/FREEBOARD">자유·익명게시판</a></li>
                 <li class="news"><a href="/board/News/KNEWS">음악뉴스</a></li>
             </ul>
-            <ul class="submenu">
-                <li><a href="/members/signUp">회원가입</a></li>
-                <li><a href="/members/login">로그인</a></li>
-            </ul>
+            <div th:unless="${#authorization.expression('isAuthenticated()')}">
+                <ul class="submenu">
+                    <li><a href="/members/signUp">회원가입</a></li>
+                    <li><a href="/members/login">로그인</a></li>
+                </ul>
+            </div>
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <ul class="submenu">
+                    <li><a href="/members/MyPage">내정보</a></li>
+                    <li><a href="/members/logout">로그아웃</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </html>

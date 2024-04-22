@@ -91,7 +91,7 @@ public class PostControl {
     }
     //게시글 보기
     @GetMapping(value = {"/view/{id}","/view/{id}/{page}"})
-    public String viewPost(@PathVariable("id") long id,@PathVariable("page") Optional<Integer> page, Model model){
+    public String viewPost(@PathVariable("id") long id,@PathVariable("page") Optional<Integer> page, Model model, Principal principal){
         PostDto postDto = postService.viewPost(id);
         model.addAttribute("post",postDto);
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -101,7 +101,9 @@ public class PostControl {
         model.addAttribute("maxPage",5);
         model.addAttribute("commentDto", new CommentDto());
         model.addAttribute("postId",id);
-
+        if(principal != null){
+            model.addAttribute("principal",principal.getName());
+        }
         return "/board/view";
     }
     //게시글 작성 이동
@@ -133,8 +135,11 @@ public class PostControl {
 
     //댓글 작성
     @PostMapping("{id}/comment")
-    public String writeComment(@PathVariable("id") String postId, @Valid CommentDto commentDto, BindingResult bindingResult,Principal principal){
+    public String writeComment(@PathVariable("id") String postId,@RequestParam("body") String body, BindingResult bindingResult,Principal principal){
         long id = Long.parseLong(postId);
+        CommentDto commentDto = new CommentDto();
+        commentDto.setBody(body);
+        commentDto.setWriter(principal.getName());
         Comment comment = Comment.createComment(commentDto);
         if(bindingResult.hasErrors()){
             return "redirect:/board/view/"+id;
@@ -164,17 +169,27 @@ public class PostControl {
         return "redirect:/board/view/"+id;
     }
     //좋아요
-    @PostMapping("/view/{id}/good")
+    @GetMapping("/view/{id}/good")
     public String good(@PathVariable("id") String postId){
         long id = Long.parseLong(postId);
         postService.good(id);
-        return "/";
+        return "redirect:/board/view/"+id;
     }
     //싫어요
-    @PostMapping("/view/{id}/bad")
+    @GetMapping("/view/{id}/bad")
     public String bad(@PathVariable("id") String postId){
         long id = Long.parseLong(postId);
         postService.bad(id);
+        return "redirect:/board/view/"+id;
+    }
+    @GetMapping("/view/{id}/update")
+    public String postUpdate(@PathVariable("id") String postId){
+        return "/";
+    }
+    @GetMapping("/view/{id}/delete")
+    public String postDelete(@PathVariable("id") String postId){
+        long id = Long.parseLong(postId);
+        postService.deletePost(id);
         return "/";
     }
 }

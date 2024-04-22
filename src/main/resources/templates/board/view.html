@@ -4,14 +4,15 @@
 </th:block>
 <th:block layout:fragment="script"></th:block>
 
-<div layout:fragment="content">
+<div layout:fragment="content" class="content">
 <!--    게시글 시작-->
     <div th:if="${not #lists.isEmpty(post)}">
         <div>
-            <div th:text="${post.title}"></div>
-            <div th:text="${post.body}"></div>
-            <div th:text="${post.createdBy}"></div>
-            <div th:text="${post.regTime}"></div>
+            <div th:text="${post.title}" class="title"></div>
+            <hr>
+<!--            <div th:text="${post.body}"></div>-->
+            <div th:text="${post.createdBy}"  class="sub"></div>
+            <div th:text="${post.regTime}" class="sub"></div>
         </div>
         <div th:if="${post.postImgDtoList.size() != 0}">
             <div th:each="postImg : ${post.postImgDtoList}">
@@ -22,6 +23,7 @@
         </div>
     </div>
 <!--    게시글 끝-->
+
 <!--    댓글-->
     <div th:if="${not #lists.isEmpty(items)}">
         <div th:each="comments : ${items}">

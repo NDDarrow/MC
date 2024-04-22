@@ -1,21 +1,20 @@
 헤더 메뉴바 css
 
-*{
+* {
     margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
 }
-#header{
+
+#header {
     margin:0 auto;
     width:1024px;
-    position:relative;
 }
 
 .hmenu {
     margin:0 auto;
     width:1024px;
     text-align: center;
-    position:relative;
 }
 
 ul {

@@ -56,7 +56,7 @@ ul {
     text-align: right;
     position: absolute;
     top: 10px;
-    right: 50px;
+    left: 1120px;
 }
 
 .submenu li {
@@ -73,6 +73,7 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
 #boardWrap{
     width:1024px;
     margin:0 auto;

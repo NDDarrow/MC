@@ -22,4 +22,6 @@ public interface PostRepo extends JpaRepository<Post, Long>, QuerydslPredicateEx
     public Page<Post> findByTitleContaining(String keyword, Pageable pageable);
 
     public Page<Post> findByMemberId(Long id, Pageable pageable);
+
+    public List<Post> findByMemberId(Long id);
 }

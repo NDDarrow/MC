@@ -9,4 +9,6 @@ public interface CommentRepo extends JpaRepository<Comment, Long> {
     public Page<Comment> findByPostIdOrderByIdAsc(Long postId, Pageable pageable);
 
     public int countByPostId(Long postId);
+
+    public List<Comment> findByCreatedBy(String createdBy);
 }

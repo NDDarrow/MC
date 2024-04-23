@@ -158,5 +158,9 @@ public class PostService {
         }
         return new PageImpl<>(postDtoList, pageable, postPage.getTotalPages());
     }
-
+    public int myPostCnt(Member user){
+        List<Post> postList = postRepo.findByMemberId(user.getId());
+        int cnt = postList.size();
+        return cnt;
+    }
 }

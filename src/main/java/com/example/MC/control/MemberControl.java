@@ -7,6 +7,7 @@ import com.example.MC.entity.Follower;
 import com.example.MC.entity.Member;
 import com.example.MC.entity.Post;
 import com.example.MC.repository.PostRepo;
+import com.example.MC.service.CommentService;
 import com.example.MC.service.MemberService;
 import com.example.MC.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class MemberControl {
     private final PasswordEncoder passwordEncoder;
     private final PostRepo postRepo;
     private  final PostService postService;
+    private final CommentService commentService;
 
     //팔로우
     @PostMapping("/Follow/{id}")
@@ -139,7 +141,12 @@ public class MemberControl {
         Member user = memberService.findByEmail(userEmail);
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> myList = postService.getMyList(user, pageable);
+        int myPostCnt = postService.myPostCnt(user);
+        int myCommentCnt = commentService.myCommentCnt(user);
+
         MemberDto userDto = createMemberDto(user);
+        model.addAttribute("postCnt", myPostCnt);
+        model.addAttribute("commentCnt",myCommentCnt);
         model.addAttribute("myList", myList);
         model.addAttribute("user",userDto);
         return "member/myPage";

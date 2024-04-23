@@ -75,4 +75,9 @@ public class CommentService {
         commentRepo.delete(comment);
         return post_id;
     }
+    public int myCommentCnt(Member user){
+        List<Comment> commentList = commentRepo.findByCreatedBy(user.getEmail());
+        int cnt = commentList.size();
+        return cnt;
+    }
 }

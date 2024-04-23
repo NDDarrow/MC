@@ -13,11 +13,12 @@
         }
     }
     function toggleReply(element) {
-        var commentDiv = element.parentElement.nextElementSibling.querySelector(".comment");
-        if (commentDiv.style.display == "none") {
-            commentDiv.style.display = "block";
+        var commentDiv = $(element).parent().nextAll(".comment").first();
+        console.log("test");
+        if (commentDiv.css("display") === "none") {
+            commentDiv.css("display", "block");
         } else {
-            commentDiv.style.display = "none";
+            commentDiv.css("display", "none");
         }
     }
     </script>
@@ -29,7 +30,7 @@
         <div class="title" th:text="${post.title}"></div>
         <div class="sub">
             <div th:text="${post.nick}"></div>
-            <div th:text="${post.regTime}"></div>
+            <div th:text="${#temporals.format(post.regTime, 'yy년 M월 d일 H:mm')}"></div>
             <div th:text="${post.view}"></div>
         </div>
         <div th:if="${principal != null}">
@@ -43,9 +44,7 @@
         </div>
             <hr>
         <div class="image-box" th:if="${post.postImgDtoList.size() != 0}">
-            <div th:each="postImg : ${post.postImgDtoList}">
-                <img th:src="${postImg.imgUrl}">
-            </div>
+            <img class="post-img" th:each="postImg : ${post.postImgDtoList}" th:src="${postImg.imgUrl}">
         </div>
         <div class="content" th:text="${post.body}"></div>
         <div class="hit-floop">
@@ -65,45 +64,49 @@
 <!--    게시글 끝-->
         <div th:if="${not #lists.isEmpty(items)}">
             <div class="comment-form" th:each="comments : ${items}">
-                <div class="comment-head">
-                    <div class="comment-head-left">
-                        <div th:text="${comments.writer}"></div>
-                        <div th:if="${principal != null}">
-                            <div class="title-icon" th:if="${comments.createdBy eq principal}">
-                                <a th:href="@{'/board/view/' + ${comments.id} + '/update'}"><i class="bi bi-pencil-fill"></i></a>
-                                <a th:href="@{'/board/view/' + ${comments.id} + '/delete'}"><i class="bi bi-trash3-fill"></i></a>
+                <div class="reply-check" th:if="${comments.cId != 0L}">
+                    <i class="bi bi-arrow-return-right"></i>
+                </div>
+                <div class="comment-check">
+                    <div class="comment-head">
+                        <div class="comment-head-left">
+                            <div th:text="${comments.writer}"></div>
+                            <div th:if="${principal != null}">
+                                <div class="title-c-icon" th:if="${comments.createdBy eq principal}">
+                                    <a th:href="@{'/board/view/' + ${comments.id} + '/cDelete'}"><i class="bi bi-trash3-fill"></i></a>
+                                </div>
+                                <div class="title-c-icon" th:unless="${comments.createdBy eq principal}">
+                                    <a th:href="@{'/member/Follow/' + ${comments.id}}"><i class="bi bi-person-plus"></i></a>
+                                </div>
                             </div>
-                            <div class="title-icon" th:unless="${comments.createdBy eq principal}">
-                                <a th:href="@{'/member/Follow/' + ${comments.id}}"><i class="bi bi-person-plus"></i></a>
+                        </div>
+                        <div class="comment-head-right">
+                            <div class="hit-floop">
+                                <a th:href="@{'/board/view/' + ${comments.id} + '/cGood'}"><i class="bi bi-hand-thumbs-up"><span th:text="${comments.good}"></span></i></a>
+                                <a th:href="@{'/board/view/' + ${comments.id} + '/cBad'}"><i class="bi bi-hand-thumbs-down"><span th:text="${comments.bad}"></span></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="comment-head-right">
-                        <div class="hit-floop">
-                            <a th:href="@{'/board/view/' + ${post.id} + '/good'}"><i class="bi bi-hand-thumbs-up"><span th:text="${post.good}"></span></i></a>
-                            <a th:href="@{'/board/view/' + ${post.id} + '/bad'}"><i class="bi bi-hand-thumbs-down"><span th:text="${post.bad}"></span></i></a>
+                    <div class="comment-body">
+                        <div th:text="${comments.body}"></div>
+                    </div>
+                    <div>
+                        <div class="comment-head-sub" >
+                            <div th:text="${#temporals.format(comments.regTime, 'yy년 M월 d일 H:mm')}"></div>
+                            <div th:if="${comments.cId == 0L}" class="click-reply-icon" onclick="toggleReply(this)">
+                                <i class="bi bi-chat-dots"></i>
+                            </div>
+                        </div>
+                        <div class="comment" style="display:none;">
+                            <form method="post" th:action="@{'/board/' + ${post.id} + '/comment/' + ${comments.id}}">
+                                <textarea name="comment-body" id="comment-body" placeholder="내용을 입력해 주세요."></textarea>
+                                <input type="hidden" th:value="${comments.id}">
+                                <button type="submit">등록</button>
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <div class="comment-head-sub">
-                        <div th:text="${comments.regTime}"></div>
-                        <div class="click-reply-icon" onclick="toggleReply(this)">
-                            <i class="bi bi-chat-dots"></i>
-                        </div>
-                    </div>
-                    <div class="comment" style="display:none;">
-                        <form method="post" th:action="@{'/board/' + ${comments.id} + '/reply'}">
-                            <textarea name="comment-body" id="comment-body" placeholder="내용을 입력해 주세요."></textarea>
-                            <input type="hidden" th:value="${comments.id}">
-                            <button type="submit">등록</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="comment-body">
-                    <div th:text="${comments.body}"></div>
-                </div>
 
+                </div>
             </div>
         </div>
 </div>

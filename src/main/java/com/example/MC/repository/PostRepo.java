@@ -1,6 +1,7 @@
 package com.example.MC.repository;
 
 import com.example.MC.constant.BoardType;
+import com.example.MC.entity.Member;
 import com.example.MC.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,4 +20,6 @@ public interface PostRepo extends JpaRepository<Post, Long>, QuerydslPredicateEx
     public List<Post> findFirst10ByBoardOrderByIdDesc(BoardType boardType);
 
     public Page<Post> findByTitleContaining(String keyword, Pageable pageable);
+
+    public Page<Post> findByMemberId(Long id, Pageable pageable);
 }

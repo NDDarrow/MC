@@ -153,17 +153,16 @@ public class PostControl {
     }
     //대댓글 작성
     @PostMapping("{id}/comment/{cId}")
-    public String writeReply(@PathVariable("id") String postId, @PathVariable("cId") String cId, @Valid CommentDto commentDto, BindingResult bindingResult){
+    public String writeReply(@PathVariable("id") String postId, @PathVariable("cId") String cId,@RequestParam("comment-body") String body){
         long id = Long.parseLong(postId);
         long commentId= Long.parseLong(cId);
-        Comment comment = Comment.createComment(commentDto);
-        if(bindingResult.hasErrors()){
-            return "redirect:/board/view/"+id;
-        }
+        Comment comment = new Comment();
+        comment.setBody(body);
         Post post = postService.findPost(id);
         comment.setPost(post);
         Comment motherComment = commentService.findCommentId(id).get();
         comment.setCId(motherComment.getId());
+
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
         return "redirect:/board/view/"+id;
@@ -191,5 +190,25 @@ public class PostControl {
         long id = Long.parseLong(postId);
         postService.deletePost(id);
         return "/";
+    }
+    @GetMapping("/view/{id}/cGood")
+    public String cGood(@PathVariable("id") String commentId){
+        long id = Long.parseLong(commentId);
+        Comment comment = commentService.good(id);
+
+        return "redirect:/board/view/"+comment.getPost().getId();
+    }
+    //싫어요
+    @GetMapping("/view/{id}/cBad")
+    public String cBad(@PathVariable("id") String postId){
+        long id = Long.parseLong(postId);
+        Comment comment = commentService.bad(id);
+        return "redirect:/board/view/"+comment.getPost().getId();
+    }
+    @GetMapping("/view/{id}/cDelete")
+    public String commentDelete(@PathVariable("id") String postId){
+        long id = Long.parseLong(postId);
+        long post_id = commentService.deleteComment(id);
+        return "redirect:/board/view/"+post_id;
     }
 }

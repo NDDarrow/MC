@@ -1,0 +1,102 @@
+내 정보 css
+
+* {
+    margin: 0;
+    /* padding: 0; */
+    /* box-sizing: border-box; */
+}
+
+.detail {
+    margin-right: 405px;
+    margin-top: 10px;
+}
+
+.detail p {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.detail span {
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.content1 {
+    margin-left: 120px;
+}
+
+.comment1 {
+    margin-left: 5px;
+}
+
+.right-click {
+    position: absolute;
+    top: 145px;
+    left: 1015px;
+}
+
+.bi-bell {
+    font-size: 40px;
+}
+
+button {
+    width: 200px;
+    height: 80px;
+    border-radius: 10px;
+    border: 0;
+    background-color: black;
+    color: white;
+    margin-left: 30px;
+    position: fixed;
+    top: 135px;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.middle-click {
+    margin-top: 80px;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.content2 {
+    margin-right: 60px;
+}
+
+.v-line {
+    border-right: 2px solid black;
+    margin-right: 65px;
+}
+
+hr {
+    width: 830px;
+    margin: 0 auto;
+    border-color: black;
+    margin-top: 10px;
+}
+
+.list-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    left: 525px;
+    top: 335px;
+}
+
+.list-content li {
+    margin-top: 10px;
+}
+
+.list-content hr {
+    width: 810px;
+    border-color: #dcdcdc;
+    margin-top: 20px;
+}
+.list-content span {
+    margin-left: 650px;
+}

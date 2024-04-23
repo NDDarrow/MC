@@ -2,12 +2,17 @@ package com.example.MC.control;
 
 import com.example.MC.dto.FollowerDto;
 import com.example.MC.dto.MemberDto;
+import com.example.MC.dto.PostDto;
 import com.example.MC.entity.Follower;
 import com.example.MC.entity.Member;
 import com.example.MC.entity.Post;
 import com.example.MC.repository.PostRepo;
 import com.example.MC.service.MemberService;
+import com.example.MC.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Optional;
 
 import static com.example.MC.dto.MemberDto.createMemberDto;
 import static org.aspectj.bridge.MessageUtil.error;
@@ -29,6 +35,7 @@ public class MemberControl {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final PostRepo postRepo;
+    private  final PostService postService;
 
     //팔로우
     @PostMapping("/Follow/{id}")
@@ -126,14 +133,18 @@ public class MemberControl {
     }
 
     //내정보 이동
-    @GetMapping("/MyPage")
-    public String myPage(Principal principal, Model model){
+    @GetMapping(value = {"/MyPage","/MyPage/{page}"})
+    public String myPage(Principal principal, @PathVariable("page") Optional<Integer> page, Model model){
         String userEmail = principal.getName();
         Member user = memberService.findByEmail(userEmail);
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<PostDto> myList = postService.getMyList(user, pageable);
         MemberDto userDto = createMemberDto(user);
+        model.addAttribute("myList", myList);
         model.addAttribute("user",userDto);
         return "member/myPage";
     }
+
     //내 정보 수정 이동
     @GetMapping("/MyUpdate")
     public String updateForm( Principal principal, Model model){

@@ -149,4 +149,14 @@ public class PostService {
         Post post = postRepo.findById(id).get();
         postRepo.delete(post);
     }
+    public Page<PostDto> getMyList(Member user, Pageable pageable){
+        Page<Post> postPage = postRepo.findByMemberId(user.getId(), pageable);
+        List<PostDto> postDtoList = new ArrayList<>();
+        for(Post post : postPage){
+            PostDto postDto = PostDto.of(post);
+            postDtoList.add(postDto);
+        }
+        return new PageImpl<>(postDtoList, pageable, postPage.getTotalPages());
+    }
+
 }

@@ -43,15 +43,15 @@ hr {
 
 .image-box {
     min-width: 390px;
-    min-height: 210px;
     max-width:500px;
-    max-height:500px;
 
     border: 2px solid midnightblue;
     text-align: center;
     margin: 30px 15px;
 }
-
+.post-img{
+    width:100%;
+}
 .content {
     margin: 30px 15px;
     min-height:300px;
@@ -127,6 +127,18 @@ button {
 .comment-form{
     width:1024px;
     margin:0 auto;
+    display:flex;
+    flex-direction:row;
+    gap:5px;
+}
+.comment-check{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+}
+.reply-check{
+    width:100px;
+    font-size:50px;
 }
 .comment-head{
     width:95%;
@@ -142,6 +154,7 @@ button {
 .comment-head-right{
     display:flex;
     justify-content:center;
+    flex-direction:align;
 }
 .comment-head-sub{
     display:flex;
@@ -154,4 +167,7 @@ button {
 }
 .click-reply-icon:hover{
     cursor:pointer;
+}
+.title-c-icon {
+    font-size: 25px;
 }

@@ -5,27 +5,39 @@
 <th:block layout:fragment="script"></th:block>
 
 <div layout:fragment="content">
-    <div>
-        <p th:text="${user.email}"></p>
+    <div class="detail">
+        <p class="nickname">닉네임</p>
+        <br>
+        <span class="content1">작성글: ??</span>
+        <span class="comment1">댓글수: ??</span>
     </div>
-    <div>
-        <p th:text="${user.userNick}"></p>
+
+    <div class="right-click">
+        <i class="bi bi-bell"></i>
+        <button>회원정보 수정</button>
     </div>
-    <div>
-        <p th:text="${user.name}"></p>
+
+
+    <div class="middle-click">
+        <span class="content2">작성글</span>
+        <span class="v-line"></span>
+        <span class="comment2">댓글수</span>
     </div>
-    <div>
-        <p th:text="${user.tell}"></p>
-    </div>
-    <div>
-        <p th:text="${user.zipCode}"></p>
-    </div>
-    <div>
-        <p th:text="${user.addr1}"></p>
-    </div>
-    <div>
-        <p th:text="${user.addr2}"></p>
-    </div>
+
+    <hr>
+
+    <ul class="list-content">
+        <li>ㅍㄹㅇㄹㅇㄹ<span>04-23</span></li>
+        <hr><br>
+        <li>2</li>
+        <hr><br>
+        <li>3</li>
+        <hr><br>
+        <li>4</li>
+        <hr><br>
+        <li>5</li>
+        <hr>
+    </ul>
 
     <a href="/members/MyUpdate">정보수정</a>
     <a href="/members/ReSign">회원탈퇴</a>

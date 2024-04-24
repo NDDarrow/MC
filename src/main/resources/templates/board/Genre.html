@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragment/basic}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragment/basic}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <!--<head>-->
 <!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
 <!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
@@ -23,7 +23,7 @@
                     <button id="searchBT"><i id="searchIcon" class="bi bi-search"></i></button>
                 </form>
             </div>
-            <button id="posting"><a href="/board/posting">글쓰기</a></button>
+            <button id="posting" sec:authorize="isAuthenticated()"><a href="/board/posting">글쓰기</a></button>
         </div>
 
         <div class="category">

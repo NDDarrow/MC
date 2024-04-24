@@ -34,12 +34,8 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/");
         http.authorizeHttpRequests()
                 .mvcMatchers("/css/**", "/javascript/**", "/images/**","").permitAll()
-                .mvcMatchers("/","search/**"
-                        ,"/members/signUp","/members/login/**","/members/IdFind","/members/PwFind","members/ResetPw"
-                        ,"/board/Genre/**","/board/FindMusic/**","/board/FreeBoard/**","/board/News/**","/board/SC/**","/board/view"
-                ).permitAll() //모두 허용할 페이지
-                .anyRequest().authenticated();
-        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse() );
+                .mvcMatchers("/**").permitAll();
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         return http.build();
     }
     @Bean

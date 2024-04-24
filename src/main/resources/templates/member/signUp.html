@@ -64,10 +64,12 @@
                 <div class="inputBox">
                     <span>이메일</span>
                     <input type="text" th:field="*{email}" placeholder="이메일">
+                    <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError"></p>
                 </div >
                 <div class="inputBox">
                     <span>비밀번호</span>
                     <input type="password" th:field="*{password}" placeholder="비밀번호">
+                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError"></p>
                 </div>
                 <div class="inputBox">
                     <span>비밀번호 확인</span>

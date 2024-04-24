@@ -7,6 +7,7 @@
 <div layout:fragment="content">
     <div id="postingBox">
         <form th:object="${postDto}" method="post" action="/board/posting" enctype="multipart/form-data">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="dropdownBox">
                 <select th:field="*{board}" class="dropdown">
                     <option value="" class="placeholder" selected hidden>카테고리를 선택해 주세요.</option>
@@ -21,9 +22,12 @@
                             th:value="${board}" th:text="${board}">
                     </option>
                 </select>
+                <p th:if="${#fields.hasErrors('board')}" th:errors="*{board}" class="fieldError"></p>
             </div>
             <div class="titleBox">
                 <input th:field="*{title}" placeholder="제목을 입력해 주세요." class="posting-title">
+                <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="fieldError"></p>
+
             </div>
             <hr>
             <div class="imgBox">
@@ -34,6 +38,7 @@
             </div>
             <div class="bodyBox">
                 <textarea th:field="*{body}" placeholder="내용을 입력해 주세요." class="posting-content"></textarea>
+                <p th:if="${#fields.hasErrors('body')}" th:errors="*{body}" class="fieldError"></p>
             </div>
             <button>등록</button>
         </form>

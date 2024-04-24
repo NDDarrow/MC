@@ -155,6 +155,8 @@ a {
     padding: 0;
     margin: 0 auto;
     display: flex;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
 }
 .bodyTag{
     width:15%;
@@ -164,7 +166,7 @@ a {
 .bodyTag2{
     width:30%;
     padding:10px 0;
-        text-align:center;
+    text-align:center;
 }
 .bodyTag1{
     width:50%;
@@ -179,5 +181,14 @@ a {
 .category:hover {
   cursor: pointer;
 }
-
-
+.fieldError{
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color:red;
+    border:2px solid red;
+    border-radius:5px;
+    width:400px;
+    margin: 5px 0;
+    padding:2px;
+}

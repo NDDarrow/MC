@@ -156,6 +156,14 @@ button {
     justify-content:center;
     flex-direction:align;
 }
+.comment-body{
+    width:80%;
+    margin:10px auto;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+
+}
 .comment-head-sub{
     display:flex;
     flex-direction:row;

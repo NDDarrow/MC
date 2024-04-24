@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -114,18 +115,19 @@ public class PostControl {
     }
     //게시글 작성
     @PostMapping("/posting")
-    public String writePost(@Valid PostDto postDto, BindingResult bindingResult, Principal principal,@RequestParam("postImgFile") List<MultipartFile> multipartFileList, Model model){
+    public String writePost(@Valid PostDto postDto, BindingResult bindingResult, Principal principal,@RequestParam("postImgFile") List<MultipartFile> multipartFileList, Model model, HttpServletRequest request){
        if(bindingResult.hasErrors()){
-           return "/posting";
+           return "/board/PostForm";
        }
         Member user =memberService.findByEmail(principal.getName());
        try{
            postService.writePost(postDto, user, multipartFileList);
        }catch(Exception e){
            model.addAttribute("errorMessage" ,"게시글 저장 중 오류가 발생했습니다");
-           return "/posting";
+           return "/board/PostForm";
        }
-        return "redirect:/";
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
     //익명 게시글 작성
     @PostMapping("/Aboard/post")
@@ -160,7 +162,7 @@ public class PostControl {
         comment.setBody(body);
         Post post = postService.findPost(id);
         comment.setPost(post);
-        Comment motherComment = commentService.findCommentId(id).get();
+        Comment motherComment = commentService.findCommentId(commentId).get();
         comment.setCId(motherComment.getId());
 
         commentService.writeComment(comment);

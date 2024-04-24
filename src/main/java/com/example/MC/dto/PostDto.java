@@ -21,10 +21,10 @@ public class PostDto {
     @NotNull(message = "게시판을 선택해 주세요")
     private BoardType board;
 
-    @NotEmpty(message =" 제목 필수 입력")
+    @NotEmpty(message ="제목은 필수입니다")
     @Length(max=40, message = "제목 20자 제한")
     private String title;
-
+    @NotEmpty(message="본문이 존재해야 합니다")
     @Length(max=4000, message = "본문 2000자 제한")
     private String body;
 

@@ -52,7 +52,11 @@ public class Member extends BaseEntity{
         member.setEmail(memberDto.getEmail());
         String password = passwordEncoder.encode(memberDto.getPassword());
         member.setPassword(password);
-        member.setUserNick(memberDto.getUserNick());
+        if(memberDto.getUserNick() != null) {
+            member.setUserNick(memberDto.getUserNick());
+        } else{
+            member.setUserNick("john");
+        }
         member.setName(memberDto.getName());
         member.setTell(memberDto.getTell());
         member.setZipCode(memberDto.getZipCode());

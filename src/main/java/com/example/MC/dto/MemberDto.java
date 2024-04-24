@@ -17,6 +17,7 @@ public class MemberDto {
     @Email( message = "잘못된 형식")
     private String email;
     @Length(min=6,max=16, message = "6~12자")
+    @NotEmpty(message = "비밀번호 필수 입력")
     private String password;
 
     private String userNick;

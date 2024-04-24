@@ -1,5 +1,6 @@
 package com.example.MC.control;
 
+import com.example.MC.dto.CommentDto;
 import com.example.MC.dto.FollowerDto;
 import com.example.MC.dto.MemberDto;
 import com.example.MC.dto.PostDto;
@@ -135,19 +136,26 @@ public class MemberControl {
     }
 
     //내정보 이동
-    @GetMapping(value = {"/MyPage","/MyPage/{page}"})
-    public String myPage(Principal principal, @PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/MyPage/{tag}","/MyPage/{tag}/{page}"})
+    public String myPage(Principal principal,@PathVariable("tag") String tag, @PathVariable("page") Optional<Integer> page, Model model){
+
         String userEmail = principal.getName();
         Member user = memberService.findByEmail(userEmail);
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<PostDto> myList = postService.getMyList(user, pageable);
+        if(tag.equals("post")) {
+            Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+            Page<PostDto> myList = postService.getMyList(user, pageable);
+            model.addAttribute("items", myList);
+        }else if(tag.equals("comment")){
+            Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+            Page<CommentDto> myList = commentService.getMyList(user, pageable);
+            model.addAttribute("item", myList);
+        }
         int myPostCnt = postService.myPostCnt(user);
         int myCommentCnt = commentService.myCommentCnt(user);
 
         MemberDto userDto = createMemberDto(user);
         model.addAttribute("postCnt", myPostCnt);
         model.addAttribute("commentCnt",myCommentCnt);
-        model.addAttribute("myList", myList);
         model.addAttribute("user",userDto);
         return "member/myPage";
     }
@@ -186,7 +194,7 @@ public class MemberControl {
     public String ReSign(String email, String pw, Principal principal, Model model){
         if(principal.getName().equals(email)) {
             memberService.reSign(email);
-            return "members/logout";
+            return "/";
         }else{
             model.addAttribute("disaccordEmail", "유저정보가 다릅니다");
             return "redirect:/";

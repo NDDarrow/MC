@@ -1,6 +1,7 @@
 package com.example.MC.service;
 
 import com.example.MC.dto.CommentDto;
+import com.example.MC.dto.PostDto;
 import com.example.MC.entity.Comment;
 import com.example.MC.entity.Member;
 import com.example.MC.entity.Post;
@@ -53,6 +54,7 @@ public class CommentService {
         return new PageImpl<>(commentDtoList, pageable, total);
     }
     public Optional<Comment> findCommentId(Long id){
+
         return commentRepo.findById(id);
     }
 
@@ -80,4 +82,15 @@ public class CommentService {
         int cnt = commentList.size();
         return cnt;
     }
+    public Page<CommentDto> getMyList(Member user, Pageable pageable){
+        Page<Comment> commentPage = commentRepo.findByCreatedBy(user.getEmail(),pageable);
+        List<CommentDto> commentDtoList = new ArrayList<>();
+        for(Comment comment : commentPage){
+            CommentDto commentDto = CommentDto.createDto(comment);
+            commentDtoList.add(commentDto);
+
+        }
+        return new PageImpl<>(commentDtoList, pageable, commentPage.getTotalPages());
+    }
+
 }

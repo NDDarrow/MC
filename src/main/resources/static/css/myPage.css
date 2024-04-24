@@ -93,3 +93,10 @@ button {
     padding-top: 30px;
     margin-right: 500px;
 }
+.point{
+    font-size:22px;
+}
+#button-form{
+    display:flex;
+    gap:10px;
+}

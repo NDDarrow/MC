@@ -9,7 +9,6 @@
         <h2 class="text-center">로그인</h2>
         <div id="login-box">
             <form role="form" method="post" action="/members/login">
-                <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
                 <div class="inputBox">
                     <span>E-MAIL</span>
                     <input class="" id="email" name="email" placeholder="이메일 입력">
@@ -18,7 +17,7 @@
                     <span>PASSWORD</span>
                     <input type="password" id="password" name="password" placeholder="비밀번호 입력">
                 </div>
-                <p th:if="${loginErrorMsg}" class="error mb-3" th:text="${loginErrorMsg}"></p>
+                <p th:if="${loginErrorMsg}" class="fieldError" th:text="${loginErrorMsg}"></p>
                 <button class="Bt">로그인</button>
             </form>
             <div id="sideLink">

@@ -13,7 +13,7 @@ import java.util.Comparator;
 public class CommentDto {
     private Long id;
     private String writer;
-    @NotNull
+    @NotNull(message = "내용이 있어야 합니다.")
     private String body;
     private LocalDateTime regTime;
     private int good;

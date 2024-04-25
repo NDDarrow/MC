@@ -61,6 +61,7 @@
         <h2 class="text-center">회원가입</h2>
         <div id="login-box">
             <form th:object="${memberDto}" method="post" action="/members/signUp">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div class="inputBox">
                     <span>이메일</span>
                     <input type="text" th:field="*{email}" placeholder="이메일">

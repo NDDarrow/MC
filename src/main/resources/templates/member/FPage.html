@@ -15,23 +15,14 @@
                 <span th:text="'작성댓글: ' + ${commentCnt}" class="content1 point"></span>
             </div>
         </div>
-        <div class="right-click">
-            <i class="bi bi-bell"></i>
-            <button><a href="/members/MyUpdate">회원정보 수정</a></button>
-        </div>
     </div>
 
     <div class="middle-click">
         <span class="content2"><a href="/members/MyPage/post">작성글</a></span>
-        <span class="line"></span>
-        <span class="comment2"><a href="/members/MyPage/comment">댓글수</a></span>
-        <span class="line"></span>
-        <span class="follow2"><a href="/members/MyPage/follow">팔로우</a></span>
     </div>
 
     <hr>
-
-    <div class="itemForm" th:if="${items}">
+    <div class="itemForm">
         <ul class="bodyList">
             <li class="bodyTag1">제목</li>
             <li class="bodyTag2">작성일</li>
@@ -41,28 +32,6 @@
             <li class="bodyTag1"><a th:href="@{'/board/view/' + ${item.id}}" th:text="${item.title}"></a></li>
             <li class="bodyTag2" th:text="${#temporals.format(item.regTime, 'yy년 M월 d일 H:mm')}">작성일</li>
             <li class="bodyTag" th:text="${item.good}"></li>
-        </ul>
-    </div>
-    <div class="itemForm" th:if="${item}">
-        <ul class="bodyList">
-            <li class="bodyTag1">본문</li>
-            <li class="bodyTag2">작성일</li>
-            <li class="bodyTag"><i class="bi bi-hand-thumbs-up"></i></li>
-        </ul>
-        <ul class="bodyList" th:each="item, stat :${item.getContent()}">
-            <li class="bodyTag1" th:text="${item.body}"></li>
-            <li class="bodyTag2" th:text="${#temporals.format(item.regTime, 'yy년 M월 d일 H:mm')}">작성일</li>
-            <li class="bodyTag" th:text="${item.good}"></li>
-        </ul>
-    </div>
-    <div class="itemForm" th:if="${follow}">
-        <ul class="bodyList-f">
-            <li class="bodyTag1">팔로우 목록</li>
-        </ul>
-        <ul class="bodyList-f" th:each="follow, stat :${follow.getContent()}">
-            <a th:href="@{'/members/FPage/' + ${follow.followerId}}">
-                <span th:text="${follow.followerNick}"></span>
-            </a>
         </ul>
     </div>
 </div>

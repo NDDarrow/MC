@@ -2,7 +2,28 @@
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/PostForm.css}">
 </th:block>
-<th:block layout:fragment="script"></th:block>
+<th:block layout:fragment="script">
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.querySelector('.imagePreview');
+                output.innerHTML = '<img src="' + reader.result + '" width="200" /><span class="removeImageButton" onclick="removeImage()">Remove</span>'
+                output.querySelector('.removeImageButton').addEventListener('click', function() {
+                    removeImage();
+                });
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        };
+
+        function removeImage() {
+            var output = document.querySelector('.imagePreview');
+            output.innerHTML = '';
+            var fileInput = document.getElementById('postImgFile');
+            fileInput.value = ''; // 선택된 파일 제거
+        }
+    </script>
+</th:block>
 
 <div layout:fragment="content">
     <div id="postingBox">
@@ -34,7 +55,8 @@
                 <label for="postImgFile">
                     <div><i class="bi bi-image"></i></div>
                 </label>
-                <input type="file" multiple="multiple" id="postImgFile" name="postImgFile" accept="image/*">
+                <input type="file" multiple="multiple" id="postImgFile" name="postImgFile" accept="image/*" onchange="previewImage(event)">
+                <div class="imagePreview"></div>
             </div>
             <div class="bodyBox">
                 <textarea th:field="*{body}" placeholder="내용을 입력해 주세요." class="posting-content"></textarea>

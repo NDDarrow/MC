@@ -2,12 +2,19 @@ package com.example.MC.service;
 
 import com.example.MC.dto.FollowerDto;
 import com.example.MC.dto.MemberDto;
+import com.example.MC.entity.Comment;
 import com.example.MC.entity.Follower;
 import com.example.MC.entity.Member;
 import com.example.MC.repository.FollowerRepo;
 
+import java.util.ArrayList;
+import  java.util.List;
+
 import com.example.MC.repository.MemberRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,16 +35,19 @@ import static com.example.MC.entity.Member.resetPw;
 public class MemberService implements UserDetailsService {
     private final MemberRepo memberRepo;
     private final FollowerRepo followerRepo;
+    private final CommentService commentService;
 
     public void makeFollowShip(Member user, Member member){
-        Follower follower = new Follower();
-        follower.setMember(member);
-        follower.setUserId(user.getId());
-        followerRepo.save(follower);
-    }
-    public void deleteFollowShip(FollowerDto followerDto){
-        Follower follower = followerRepo.findByUserIdAndMemberId(followerDto.getUserId(),followerDto.getFollowerId());
-        followerRepo.delete(follower);
+        Follower follower = followerRepo.findByUserIdAndMemberId(user.getId(), member.getId());
+        if( follower == null) {
+            Follower follower1 = new Follower();
+            follower1.setMember(member);
+            follower1.setUserId(user.getId());
+            followerRepo.save(follower1);
+        }
+        if( follower != null){
+            followerRepo.delete(follower);
+        }
     }
     public Follower findFollowShip(long user ,Member follower){
         Follower follower1 = followerRepo.findByUserIdAndMemberId(user, follower.getId());
@@ -65,6 +75,20 @@ public class MemberService implements UserDetailsService {
         if(user != null){
             return user;
         }else return null;
+    }
+    public Member findCommentWriter(long id){
+        Comment comment = commentService.findCommentId(id).get();
+        Member member = memberRepo.findByEmail(comment.getCreatedBy());
+        return member;
+    }
+    public Page<FollowerDto> getMyList(Member user, Pageable pageable){
+        Page<Follower> followerPage = followerRepo.findByUserId(user.getId(), pageable);
+        List<FollowerDto> followerDtoList = new ArrayList<>();
+        for(Follower follower : followerPage){
+            FollowerDto followerDto = FollowerDto.createFDto(follower);
+            followerDtoList.add(followerDto);
+        }
+        return new PageImpl<>(followerDtoList, pageable, followerPage.getTotalPages());
     }
 
     public Member findPw(String email, String tell){

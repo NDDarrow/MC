@@ -35,4 +35,17 @@ public class PostImgService {
         //데이터베이스 저장은 Entity로 한다.
         postImgRepo.save(postImg);
     }
+    public void updatePostImg(PostImg postImg, MultipartFile multipartFile) throws Exception{
+        String oriName = multipartFile.getOriginalFilename();
+        String imgName = "";
+        String imgUrl = "";
+
+        if( !StringUtils.isEmpty(oriName)){ //사용자가 업로드 한 원본 이미지이름 여부
+            imgName = fileService.uploadFile(imgLocation, oriName, multipartFile.getBytes());
+            imgUrl = "/images/post/" + imgName;
+        }
+        postImg.setImgUrl(imgUrl);
+        postImg.setImgName(imgName);
+        postImg.setOriImgName(oriName);
+    }
 }

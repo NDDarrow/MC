@@ -83,3 +83,15 @@ button {
     position:relative;
     left:805px;
 }
+.imagePreview {
+    width: 200px;
+    height: auto;
+    position: relative;
+}
+.imagePreview span{
+    cursor: pointer;
+    color: red;
+    position: absolute; /* 삭제 버튼을 이미지 오른쪽 상단에 위치시키기 위해 position 속성 추가 */
+    top: 0;
+    right: 0;
+}

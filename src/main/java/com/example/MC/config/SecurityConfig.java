@@ -34,7 +34,9 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/");
         http.authorizeHttpRequests()
                 .mvcMatchers("/css/**", "/javascript/**", "/images/**","").permitAll()
-                .mvcMatchers("/**").permitAll();
+                .mvcMatchers("/**").permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/members/login");
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         return http.build();
     }

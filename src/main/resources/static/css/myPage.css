@@ -69,6 +69,11 @@ button {
 }
 .comment2{
     margin-left:60px;
+    margin-right:60px;
+    margin-bottom:10px;
+}
+.follow2{
+    margin-left:60px;
     margin-bottom:10px;
 }
 .line{
@@ -99,4 +104,14 @@ button {
 #button-form{
     display:flex;
     gap:10px;
+}
+.bodyList-f{
+    width:80%;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    justify-content:center;
+    font-size:22px;
 }

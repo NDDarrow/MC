@@ -9,6 +9,7 @@
         <h2 class="text-center">아이디 찾기</h2>
         <div id="login-box">
             <form role="form" method="post" action="/members/IdFind">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
                 <div class="inputBox">
                     <span>이름</span>
@@ -18,7 +19,7 @@
                     <span>전화번호</span>
                     <input type="text" id="tell" name="tell" placeholder="전화번호입력">
                 </div>
-                <p th:if="${loginErrorMsg}" th:text="${loginErrorMsg}"></p>
+                <p class="idResult" th:if="${email}" th:text="${email}"></p>
                 <button class="Bt">아이디찾기</button>
             </form>
             <div id="sideLink">

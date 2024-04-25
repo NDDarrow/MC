@@ -14,10 +14,13 @@ public class FollowerDto {
 
     private Long followerId;
 
+    private String followerNick;
+
     public static FollowerDto createFDto(Follower follower){
         FollowerDto followerDto = new FollowerDto();
         followerDto.setUserId(follower.getUserId());
         followerDto.setFollowerId(follower.getMember().getId());
+        followerDto.setFollowerNick(follower.getMember().getUserNick());
         return followerDto;
     }
 }

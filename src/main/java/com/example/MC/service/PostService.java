@@ -145,6 +145,24 @@ public class PostService {
         postRepo.save(post);
     }
 
+    public void updatePosting(PostDto postDto ,List<MultipartFile> multipartFileList) throws Exception {
+        System.out.println(1);
+        Post post = postRepo.findById(postDto.getId()).get();
+        System.out.println(2);
+        post.setBody(postDto.getBody());
+        System.out.println(3);
+        if(!multipartFileList.isEmpty()) {
+            for (int i = 0; i < multipartFileList.size(); i++) {
+                MultipartFile file = multipartFileList.get(i);
+                if(!file.isEmpty()) {
+                    PostImg postImg = new PostImg();
+                    postImg.setPost(post);
+                    postImgService.updatePostImg(postImg, file);
+                }
+            }
+        }
+    }
+
     public void deletePost(long id){
         Post post = postRepo.findById(id).get();
         postRepo.delete(post);

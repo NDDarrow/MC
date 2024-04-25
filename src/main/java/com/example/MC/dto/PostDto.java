@@ -43,6 +43,7 @@ public class PostDto {
     private int view;
     private int commentCnt;
 
+
     public static PostDto of(Post post){
         PostDto postDto = new PostDto();
         postDto.setId(post.getId());

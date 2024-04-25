@@ -4,9 +4,11 @@ import com.example.MC.dto.CommentDto;
 import com.example.MC.dto.FollowerDto;
 import com.example.MC.dto.MemberDto;
 import com.example.MC.dto.PostDto;
+import com.example.MC.entity.Comment;
 import com.example.MC.entity.Follower;
 import com.example.MC.entity.Member;
 import com.example.MC.entity.Post;
+import com.example.MC.repository.CommentRepo;
 import com.example.MC.repository.PostRepo;
 import com.example.MC.service.CommentService;
 import com.example.MC.service.MemberService;
@@ -22,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Optional;
@@ -39,21 +42,30 @@ public class MemberControl {
     private final PostRepo postRepo;
     private  final PostService postService;
     private final CommentService commentService;
+    private final CommentRepo commentRepo;
 
     //팔로우
-    @PostMapping("/Follow/{id}")
-    String addFollower(@PathVariable("id") String mId, Principal principal){
+    @GetMapping("/Follow/{id}")
+    String addFollower(@PathVariable("id") String mId, Principal principal, HttpServletRequest request, Model model){
         long id = Long.parseLong(mId);
         Post post = postRepo.findById(id).get();
         Member follower = memberService.findByEmail(principal.getName());
         Member follow = memberService.findById(post.getMember().getId()).get();
-        FollowerDto followerDto = FollowerDto.createFDto(memberService.findFollowShip(follower.getId(), follow));
-        if(followerDto != null){
-            memberService.deleteFollowShip(followerDto);
-        }else{
-            memberService.makeFollowShip(follower,follow);
-        }
-        return "/";
+        memberService.makeFollowShip(follower, follow);
+        String referer = request.getHeader("Referer");
+        model.addAttribute("followSuccess","팔로우가 되었습니다");
+        return "redirect:" + referer;
+    }
+    @GetMapping("/cFollow/{id}")
+    String addCFollower(@PathVariable("id") String mId, Principal principal, HttpServletRequest request, Model model){
+        long id = Long.parseLong(mId);
+        Comment comment = commentRepo.findById(id).get();
+        Member follower = memberService.findByEmail(principal.getName());
+        Member follow = memberService.findCommentWriter(id);
+        memberService.makeFollowShip(follower, follow);
+        String referer = request.getHeader("Referer");
+        model.addAttribute("followSuccess","팔로우가 되었습니다");
+        return "redirect:" + referer;
     }
 
     //회원가입 이동 완
@@ -74,7 +86,7 @@ public class MemberControl {
             model.addAttribute("errorMessage", e.getMessage());
             return "member/signUp";
         }
-        return "redirect:/";
+        return "redirect:/members/login";
     }
 
 
@@ -117,7 +129,7 @@ public class MemberControl {
     public String foundPw(@RequestParam String email, @RequestParam String tell, Model model) {
         Member user = memberService.findPw(email, tell);
         if (user != null) {
-            model.addAttribute("pwFindMessage", "비밀번호를 재설정해 주십시요");
+            model.addAttribute("pwFindMessage", "비밀번호를 재설정해 주십시오");
             model.addAttribute("email", email);
             model.addAttribute("tell", tell);
             return "member/pwFind";
@@ -138,7 +150,6 @@ public class MemberControl {
     //내정보 이동
     @GetMapping(value = {"/MyPage/{tag}","/MyPage/{tag}/{page}"})
     public String myPage(Principal principal,@PathVariable("tag") String tag, @PathVariable("page") Optional<Integer> page, Model model){
-
         String userEmail = principal.getName();
         Member user = memberService.findByEmail(userEmail);
         if(tag.equals("post")) {
@@ -149,6 +160,10 @@ public class MemberControl {
             Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
             Page<CommentDto> myList = commentService.getMyList(user, pageable);
             model.addAttribute("item", myList);
+        }else if(tag.equals("follow")){
+            Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+            Page<FollowerDto> myList= memberService.getMyList(user, pageable);
+            model.addAttribute("follow", myList);
         }
         int myPostCnt = postService.myPostCnt(user);
         int myCommentCnt = commentService.myCommentCnt(user);
@@ -159,7 +174,24 @@ public class MemberControl {
         model.addAttribute("user",userDto);
         return "member/myPage";
     }
+    @GetMapping(value = {"/FPage/{followerId}","/FPage/{followerId}/{page}"})
+    public String openPage(@PathVariable("followerId") String id,@PathVariable("page") Optional<Integer> page, Model model){
+        long followerId = Long.parseLong(id);
+        Member follower = memberService.findById(followerId).get();
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<PostDto> FList = postService.getMyList(follower, pageable);
+        model.addAttribute("items",FList);
 
+        int myPostCnt = postService.myPostCnt(follower);
+        int myCommentCnt = commentService.myCommentCnt(follower);
+
+        MemberDto userDto = createMemberDto(follower);
+        model.addAttribute("postCnt", myPostCnt);
+        model.addAttribute("commentCnt",myCommentCnt);
+        model.addAttribute("user",userDto);
+        return "member/FPage";
+
+    }
     //내 정보 수정 이동
     @GetMapping("/MyUpdate")
     public String updateForm( Principal principal, Model model){

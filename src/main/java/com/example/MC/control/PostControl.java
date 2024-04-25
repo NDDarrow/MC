@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -129,6 +130,22 @@ public class PostControl {
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
+
+    @PostMapping("/postUpdate")
+    public String updatePost(@Valid PostDto postDto,BindingResult bindingResult, @RequestParam("postImgFile") List<MultipartFile> multipartFileList, Model model, RedirectAttributes redirectAttributes){
+        if(bindingResult.hasErrors()){
+            return "/board/PostUpdate";
+        }
+        try {
+            postService.updatePosting(postDto, multipartFileList);
+        }catch(Exception e){
+            model.addAttribute("errorMessage" ,"게시글 저장 중 오류가 발생했습니다");
+            e.printStackTrace();
+            return "/board/PostForm";
+        }
+        redirectAttributes.addAttribute("postId", postDto.getId());
+        return "redirect:/board/view/{postId}";
+    }
     //익명 게시글 작성
     @PostMapping("/Aboard/post")
     public String writeAboard(@Valid APostDto aPostDto, BindingResult bindingResult){
@@ -184,8 +201,11 @@ public class PostControl {
         return "redirect:/board/view/"+id;
     }
     @GetMapping("/view/{id}/update")
-    public String postUpdate(@PathVariable("id") String postId){
-        return "/";
+    public String postUpdate(@PathVariable("id") long postId, Model model){
+        Post post = postService.findPost(postId);
+        PostDto postDto = PostDto.of(post);
+        model.addAttribute("postDto", postDto);
+        return "/board/PostUpdate";
     }
     @GetMapping("/view/{id}/delete")
     public String postDelete(@PathVariable("id") String postId){
@@ -193,6 +213,7 @@ public class PostControl {
         postService.deletePost(id);
         return "/";
     }
+    @PostMapping()
     @GetMapping("/view/{id}/cGood")
     public String cGood(@PathVariable("id") String commentId){
         long id = Long.parseLong(commentId);

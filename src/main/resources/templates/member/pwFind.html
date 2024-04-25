@@ -12,7 +12,8 @@
 
         <div id="login-box">
             <form th:if="${pwFindMessage}" method="post" action="/members/ResetPw">
-                <p th:text="${pwFindMessage}"></p>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <p class="idResult" th:text="${pwFindMessage}"></p>
                 <div class="inputBox">
                     <span>이메일</span>
                     <input type="text" id="user_email" name="user_email" th:value="${email}">
@@ -28,6 +29,7 @@
                 <button class="Bt">비밀번호 재등록</button>
             </form>
             <form th:unless="${pwFindMessage}" role="form" method="post" action="/members/PwFind">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div class="inputBox">
                     <span>이메일</span>
                     <input type="text" id="email" name="email" placeholder="이메일입력">

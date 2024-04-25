@@ -28,18 +28,61 @@
 
         <div class="category">
             <ul>
-                <li class="ROCK off"><a href="/board/Genre/ROCK">락</a></li>
-                <li class="METAL off"><a href="/board/Genre/METAL">메탈</a></li>
-                <li class="BALLAD off"><a href="/board/Genre/BALLAD">발라드</a></li>
-                <li class="CLASSIC off"><a href="/board/Genre/CLASSIC">클래식</a></li>
-                <li class="POP off"><a href="/board/Genre/POP">팝송</a></li>
-                <li class="HIPHOP off"><a href="/board/Genre/HIPHOP">힙합</a></li>
-                <li class="K_POP_B off"><a href="/board/Genre/K_POP_B">K-POP(남)</a></li>
-                <li class="K_POP_G off"><a href="/board/Genre/K_POP_G">K-POP(여)</a></li>
+                <li class="ROCK off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="ROCK">
+                        <button class="CTBt" type="submit">락</button>
+                    </form>
+                </li>
+                <li class="METAL off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="METAL">
+                        <button class="CTBt" type="submit">메탈</button>
+                    </form>
+                </li>
+                <li class="BALLAD off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="BALLAD">
+                        <button class="CTBt" type="submit">발라드</button>
+                    </form>
+                </li>
+                <li class="CLASSIC off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="CLASSIC">
+                        <button class="CTBt" type="submit">클래식</button>
+                    </form>
+                </li>
+                <li class="POP off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="POP">
+                        <button class="CTBt" type="submit">팝송</button>
+                    </form>
+                </li>
+                <li class="HIPHOP off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="HIPHOP">
+                        <button class="CTBt" type="submit">힙합</button>
+                    </form>
+                </li>
+                <li class="K_POP_B off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="K_POP_B">
+                        <button class="CTBt" type="submit">K-POP(남)</button>
+                    </form>
+                </li>
+                <li class="K_POP_G off">
+                    <form method="get" action="/board/Genre">
+                        <input type="hidden" name="genre" value="K_POP_G">
+                        <button class="CTBt" type="submit">K-POP(여)</button>
+                    </form>
+                </li>
             </ul>
         </div>
 
         <div class="listWrap">
+            <div class="showQuery">
+                <span th:text=""></span>
+            </div>
             <ul class="bodyList">
                 <li class="bodyTag1">제목</li>
                 <li class="bodyTag">작성자</li>
@@ -47,26 +90,30 @@
                 <li class="bodyTag">히트수</li>
             </ul>
             <ul class="bodyList" th:each="item, stat :${items.getContent()}">
-                <li class="bodyTag1"><a th:href="@{'/board/view/' + ${item.id}}" th:text="${item.title}"></a></li>
+                <li class="bodyTag1">
+                    <form method="get" action="/board/view">
+                        <input type="hidden" name="id" th:value="${item.id}">
+                        <button class="getBt" type="submit"><span th:text="${item.title}"></span></button>
+                    </form>
+                </li>
                 <li class="bodyTag" th:text="${item.createdBy}">작성자</li>
                 <li class="bodyTag2" th:text="${#temporals.format(item.regTime, 'yy년 M월 d일 H:mm')}">작성일</li>
                 <li class="bodyTag" th:text="${item.good}">히트수</li>
             </ul>
-
             <div th:with="start=${(items.number/maxPage)*maxPage + 1} , end=(${(items.totalPages ==0 ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1) : items.totalPages) ) } )">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${items.number eq 0} ? 'disabled' : '' ">
-                        <a th:href="@{'/board/FindMusic/'+${items.number-1}}" class="page-link" aria-label="Prev">
+                        <a th:href="@{'/board/Genre/'+${items.number-1}}" class="page-link" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
 
                     <li th:each="page : ${#numbers.sequence(start,end)}" th:classappend="${items.number eq page-1} ? 'active' : '' " class="page-item">
-                        <a th:href="@{'/board/FindMusic/'+${page-1}}" th:text="${page}" class="page-link"></a>
+                        <a th:href="@{'/board/Genre?id='+{items.id}+'&page='+${page-1}}" th:text="${page}" class="page-link"></a>
                     </li>
 
                     <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled' : ''">
-                        <a th:href="@{'/board/FindMusic/'+${items.number+1}}" aria-label="Next" class="page-link">
+                        <a th:href="@{'/board/Genre/'+${items.number+1}}" aria-label="Next" class="page-link">
                             <span aria-hidden="true">Next</span>
                         </a>
                     </li>

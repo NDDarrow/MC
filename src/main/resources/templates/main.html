@@ -23,7 +23,12 @@
                 <p>음악뉴스</p>
                 <ul class="boxList" th:each="news, stat :${news}">
                     <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
-                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${news.id}}" th:text="${news.title}"></a></li>
+                    <li class="boxTag1">
+                        <form method="get" action="/board/view">
+                            <input type="hidden" name="id" th:value="${news.id}">
+                            <button class="getBt" type="submit"><span th:text="${news.title}"></span></button>
+                        </form>
+                    </li>
                     <li class="boxTag" th:text="${news.view}"></li>
                 </ul>
             </div>
@@ -31,7 +36,12 @@
                 <p>히트글</p>
                 <ul class="boxList" th:each="hit, stat :${hit}">
                     <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
-                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${hit.id}}" th:text="${hit.title}"></a></li>
+                    <li class="boxTag1">
+                        <form method="get" action="/board/view">
+                            <input type="hidden" name="id" th:value="${hit.id}">
+                            <button class="getBt" type="submit"><span th:text="${hit.title}"></span></button>
+                        </form>
+                    </li>
                     <li class="boxTag" th:text="${hit.good}"></li>
                 </ul>
             </div>
@@ -39,7 +49,12 @@
                 <p>조회 많은 글</p>
                 <ul class="boxList" th:each="view, stat :${view}">
                     <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
-                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${view.id}}" th:text="${view.title}"></a></li>
+                    <li class="boxTag1">
+                        <form method="get" action="/board/view">
+                            <input type="hidden" name="id" th:value="${view.id}">
+                            <button class="getBt" type="submit"><span th:text="${view.title}"></span></button>
+                        </form>
+                    </li>
                     <li class="boxTag" th:text="${view.view}"></li>
                 </ul>
             </div>
@@ -47,7 +62,12 @@
                 <p>댓글 많은 글</p>
                 <ul class="boxList" th:each="comment, stat :${comment}">
                     <li class="boxTag"><span th:text="${stat.index + 1}"></span></li>
-                    <li class="boxTag1"><a th:href="@{'/board/view/' + ${comment.id}}" th:text="${comment.title}"></a></li>
+                    <li class="boxTag1">
+                        <form method="get" action="/board/view">
+                            <input type="hidden" name="id" th:value="${comment.id}">
+                            <button class="getBt" type="submit"><span th:text="${comment.title}"></span></button>
+                        </form>
+                    </li>
                     <li class="boxTag" th:text="${comment.commentCnt}"></li>
                 </ul>
             </div>

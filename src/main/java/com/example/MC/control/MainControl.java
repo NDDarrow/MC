@@ -35,8 +35,8 @@ public class MainControl {
         model.addAttribute("board", "main");
         return "main";
     }
-    @GetMapping(value = {"/search", "search/{page}"})
-    public String search(@PathVariable("page") Optional<Integer> page, @RequestParam("query")String query, Model model){
+    @GetMapping(value = {"/search"})
+    public String search(@RequestParam("page") Optional<Integer> page, @RequestParam("query")String query, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> postDtoPage = postService.searchPost(query,pageable);
         model.addAttribute("searchResult",postDtoPage);

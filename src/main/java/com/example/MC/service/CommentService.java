@@ -61,15 +61,13 @@ public class CommentService {
     public void writeComment(Comment comment){
         commentRepo.save(comment);
     }
-    public Comment good(long id){
+    public void good(long id){
         Comment comment = commentRepo.findById(id).get();
         comment.setGood(comment.getGood()+1);
-        return comment;
     }
-    public Comment bad(long id){
+    public void bad(long id){
         Comment comment = commentRepo.findById(id).get();
         comment.setBad(comment.getBad()+1);
-        return comment;
     }
     public long deleteComment(long id){
         Comment comment = commentRepo.findById(id).get();

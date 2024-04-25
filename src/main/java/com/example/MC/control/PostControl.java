@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -37,8 +39,8 @@ public class PostControl {
     private final MemberService memberService;
     private final CommentService commentService;
     //장르 게시판 이동
-    @GetMapping(value = {"/Genre/{genre}", "/Genre/{genre}/{page}"})
-    public String genreBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/Genre", "/Genre/{page}"})
+    public String genreBoard(@RequestParam("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         // 장르에 맞는 글 리스트를 가져오는 서비스 메서드를 호출합니다
         Page<PostDto> genreList = postService.getPostList(BoardType.valueOf(genre), pageable);
@@ -60,8 +62,8 @@ public class PostControl {
         return "/board/FindMusic";
     }
     //자유게시판 이동
-    @GetMapping(value = {"/FreeBoard/{genre}", "/FreeBoard/{genre}/{page}"})
-    public String FreeBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/FreeBoard", "/FreeBoard/{page}"})
+    public String FreeBoard(@RequestParam("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> FreeList = postService.getPostList(BoardType.valueOf(genre), pageable);
 
@@ -71,8 +73,8 @@ public class PostControl {
         return "/board/Freeboard";
     }
     //뉴스게시판 이동
-    @GetMapping(value = {"/News/{genre}", "/News/{genre}/{page}"})
-    public String newsBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/News", "/News/{page}"})
+    public String newsBoard(@RequestParam("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> NewsList = postService.getPostList(BoardType.valueOf(genre), pageable);
 
@@ -81,8 +83,8 @@ public class PostControl {
         model.addAttribute("board","news");
         return "/board/News";
     }
-    @GetMapping(value = {"/SC/{genre}", "/SC/{genre}/{page}"})
-    public String SCBoard(@PathVariable("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model) {
+    @GetMapping(value = {"/SC", "/SC/{page}"})
+    public String SCBoard(@RequestParam("genre") String genre, @PathVariable("page") Optional<Integer> page, Model model) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> SCList = postService.getPostList(BoardType.valueOf(genre), pageable);
 
@@ -92,8 +94,8 @@ public class PostControl {
         return "/board/SC";
     }
     //게시글 보기
-    @GetMapping(value = {"/view/{id}","/view/{id}/{page}"})
-    public String viewPost(@PathVariable("id") long id,@PathVariable("page") Optional<Integer> page, Model model, Principal principal){
+    @GetMapping(value = {"/view","/view/{page}"})
+    public String viewPost(@RequestParam("id") long id,@PathVariable("page") Optional<Integer> page, Model model, Principal principal){
         PostDto postDto = postService.viewPost(id);
         model.addAttribute("post",postDto);
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -153,26 +155,23 @@ public class PostControl {
     }
 
     //댓글 작성
-    @PostMapping("{id}/comment")
-    public String writeComment(@PathVariable("id") String postId,@RequestParam("body") String body, BindingResult bindingResult,Principal principal){
-        long id = Long.parseLong(postId);
+    @PostMapping("/comment")
+    public String writeComment(@RequestParam("id") String postId,@RequestParam("body") String body,Principal principal){
+       long id = Long.parseLong(postId);
         CommentDto commentDto = new CommentDto();
         commentDto.setBody(body);
         commentDto.setWriter(principal.getName());
         Comment comment = Comment.createComment(commentDto);
-        if(bindingResult.hasErrors()){
-            return "redirect:/board/view/"+id;
-        }
         Post post = postService.findPost(id);
         comment.setPost(post);
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
         postService.updatePost(post);
-        return "redirect:/board/view/"+id;
+        return "redirect:/board/view/"+postId;
     }
     //대댓글 작성
-    @PostMapping("{id}/comment/{cId}")
-    public String writeReply(@PathVariable("id") String postId, @PathVariable("cId") String cId,@RequestParam("comment-body") String body){
+    @PostMapping("/reply")
+    public String writeReply(@RequestParam("id") String postId, @RequestParam("cId") String cId,@RequestParam("comment-body") String body){
         long id = Long.parseLong(postId);
         long commentId= Long.parseLong(cId);
         Comment comment = new Comment();
@@ -184,51 +183,122 @@ public class PostControl {
 
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
-        return "redirect:/board/view/"+id;
+        return "redirect:/board/view/"+postId;
     }
     //좋아요
-    @GetMapping("/view/{id}/good")
-    public String good(@PathVariable("id") String postId){
+    @GetMapping("/good/{id}")
+    public String good(@PathVariable("id") String postId,HttpServletRequest request, HttpServletResponse response){
         long id = Long.parseLong(postId);
-        postService.good(id);
-        return "redirect:/board/view/"+id;
+
+        Cookie[] cookies = request.getCookies();
+        int goodCount = 1;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("good".equals(cookie.getName())) {
+                    goodCount += Integer.parseInt(cookie.getValue());
+                    break;
+                }
+            }
+        }
+        if( goodCount <= 10) {
+            Cookie cookie = new Cookie("good", Integer.toString(goodCount));
+            cookie.setMaxAge(3600); // 쿠키의 유효 시간 설정 (초 단위, 여기서는 1시간)
+            cookie.setPath("/"); // 쿠키의 경로 설정 (모든 경로에 쿠키를 사용할 수 있도록 설정)
+            postService.good(id);
+            // 응답에 쿠키 추가
+            response.addCookie(cookie);
+        }
+        return "redirect:/board/view/" + postId;
     }
     //싫어요
-    @GetMapping("/view/{id}/bad")
-    public String bad(@PathVariable("id") String postId){
+    @GetMapping("/bad/{id}")
+    public String bad(@PathVariable("id") String postId,HttpServletRequest request, HttpServletResponse response){
         long id = Long.parseLong(postId);
-        postService.bad(id);
+        Cookie[] cookies = request.getCookies();
+        int goodCount = 1;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("bad".equals(cookie.getName())) {
+                    goodCount += Integer.parseInt(cookie.getValue());
+                    break;
+                }
+            }
+        }
+        if( goodCount <= 10) {
+            Cookie cookie = new Cookie("bad", Integer.toString(goodCount));
+            cookie.setMaxAge(3600); // 쿠키의 유효 시간 설정 (초 단위, 여기서는 1시간)
+            cookie.setPath("/"); // 쿠키의 경로 설정 (모든 경로에 쿠키를 사용할 수 있도록 설정)
+            postService.bad(id);
+            // 응답에 쿠키 추가
+            response.addCookie(cookie);
+        }
         return "redirect:/board/view/"+id;
     }
-    @GetMapping("/view/{id}/update")
-    public String postUpdate(@PathVariable("id") long postId, Model model){
-        Post post = postService.findPost(postId);
+    @GetMapping("view/update")
+    public String postUpdate(@RequestParam("id") String postId, Model model){
+        long id = Long.parseLong(postId);
+        Post post = postService.findPost(id);
         PostDto postDto = PostDto.of(post);
         model.addAttribute("postDto", postDto);
         return "/board/PostUpdate";
     }
-    @GetMapping("/view/{id}/delete")
-    public String postDelete(@PathVariable("id") String postId){
+    @GetMapping("view/delete")
+    public String postDelete(@RequestParam("id") String postId){
         long id = Long.parseLong(postId);
         postService.deletePost(id);
         return "/";
     }
-    @PostMapping()
-    @GetMapping("/view/{id}/cGood")
-    public String cGood(@PathVariable("id") String commentId){
-        long id = Long.parseLong(commentId);
-        Comment comment = commentService.good(id);
 
+    @GetMapping("/cGood/{id}")
+    public String cGood(@PathVariable("id") String commentId,HttpServletRequest request, HttpServletResponse response){
+        long id = Long.parseLong(commentId);
+        Cookie[] cookies = request.getCookies();
+        Comment comment = commentService.findCommentId(id).get();
+        int goodCount = 1;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("cGood".equals(cookie.getName())) {
+                    goodCount += Integer.parseInt(cookie.getValue());
+                    break;
+                }
+            }
+        }
+        if( goodCount <= 10) {
+            Cookie cookie = new Cookie("cGood", Integer.toString(goodCount));
+            cookie.setMaxAge(3600); // 쿠키의 유효 시간 설정 (초 단위, 여기서는 1시간)
+            cookie.setPath("/"); // 쿠키의 경로 설정 (모든 경로에 쿠키를 사용할 수 있도록 설정)
+            commentService.good(id);
+            // 응답에 쿠키 추가
+            response.addCookie(cookie);
+        }
         return "redirect:/board/view/"+comment.getPost().getId();
     }
     //싫어요
-    @GetMapping("/view/{id}/cBad")
-    public String cBad(@PathVariable("id") String postId){
+    @GetMapping("/cBad/{id}")
+    public String cBad(@PathVariable("id") String postId,HttpServletRequest request, HttpServletResponse response){
         long id = Long.parseLong(postId);
-        Comment comment = commentService.bad(id);
+        Cookie[] cookies = request.getCookies();
+        Comment comment = commentService.findCommentId(id).get();
+        int goodCount = 1;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("cBad".equals(cookie.getName())) {
+                    goodCount += Integer.parseInt(cookie.getValue());
+                    break;
+                }
+            }
+        }
+        if( goodCount <= 10) {
+            Cookie cookie = new Cookie("cBad", Integer.toString(goodCount));
+            cookie.setMaxAge(3600); // 쿠키의 유효 시간 설정 (초 단위, 여기서는 1시간)
+            cookie.setPath("/"); // 쿠키의 경로 설정 (모든 경로에 쿠키를 사용할 수 있도록 설정)
+            commentService.bad(id);
+            // 응답에 쿠키 추가
+            response.addCookie(cookie);
+        }
         return "redirect:/board/view/"+comment.getPost().getId();
     }
-    @GetMapping("/view/{id}/cDelete")
+    @GetMapping("/cDelete/{id}")
     public String commentDelete(@PathVariable("id") String postId){
         long id = Long.parseLong(postId);
         long post_id = commentService.deleteComment(id);

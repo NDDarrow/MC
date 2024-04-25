@@ -32,6 +32,8 @@
     font-size: 25px;
     margin-top: 10px;
     margin-left: 20px;
+    display:flex;
+    gap:5px;
 }
 
 
@@ -109,8 +111,7 @@ textarea {
     outline: none;
     resize: none;
 }
-
-button {
+.CBt{
     width: 70px;
     height: 40px;
     margin-top: 3px;

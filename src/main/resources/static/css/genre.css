@@ -19,4 +19,21 @@ body {
     align-items: center;
     border-radius: 30px;
 }
+.CTBt{
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    height:50px;
+    font-size: 19px;
+    display: inline-flex;
+    margin:0 10px;
+    width:100px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    border:none;
+    background:none;
+    padding:0;
+    cursor:pointer;
+}
+
 

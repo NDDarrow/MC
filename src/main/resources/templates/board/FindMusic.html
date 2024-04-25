@@ -31,7 +31,12 @@
                 <li class="bodyTag">히트수</li>
             </ul>
             <ul class="bodyList" th:each="item, stat :${items.getContent()}">
-                <li class="bodyTag1"><a th:href="@{'/board/view/' + ${item.id}}" th:text="${item.title}"></a></li>
+                <li class="bodyTag1">
+                    <form method="get" action="/board/view">
+                        <input type="hidden" name="id" th:value="${item.id}">
+                        <button class="getBt" type="submit"><span th:text="${item.title}"></span></button>
+                    </form>
+                </li>
                 <li class="bodyTag" th:text="${item.createdBy}">작성자</li>
                 <li class="bodyTag2" th:text="${#temporals.format(item.regTime, 'yy년 M월 d일 H:mm')}">작성일</li>
                 <li class="bodyTag" th:text="${item.good}">히트수</li>

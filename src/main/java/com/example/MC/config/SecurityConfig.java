@@ -23,6 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
+        String[] permit = {"/members/MyPage/**", "/members/FPage/**","/members/MYUpdate","/board/posting","/board/postUpdate","/board/comment","/board/reply","/board/good/**","/board/bad/**","/board/cGood/**","/board/cBad/**","/board/view/update","/board/view/delete","/board/cDelete/**"};
         http.formLogin()
                 .loginPage("/members/login")
                 .defaultSuccessUrl("/")
@@ -33,8 +34,9 @@ public class SecurityConfig {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                 .logoutSuccessUrl("/");
         http.authorizeHttpRequests()
-                .mvcMatchers("/css/**", "/javascript/**", "/images/**","").permitAll()
-                .mvcMatchers("/**").permitAll()
+                .mvcMatchers("/css/**", "/js/**", "/image/**").permitAll()
+                .mvcMatchers(permit).hasAnyRole("USER", "ADMIN")
+                .anyRequest().permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/members/login");
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());

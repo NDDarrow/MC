@@ -23,8 +23,13 @@
 
         <div class="category">
             <ul>
-                <li class="FREEBOARD off"><a href="/board/FreeBoard/FREEBOARD">자유게시판</a></li>
-                <li class="ABOARD off"><a href="/board/FreeBoard/ABOARD">익명게시판</a></li>
+                <li class="FREEBOARD off">
+                    <form method="get" action="/board/FreeBoard">
+                        <input type="hidden" name="genre" value="FREEBOARD">
+                        <button class="navBt" type="submit">자유게시판</button>
+                    </form>
+                </li>
+<!--                <li class="ABOARD off"><a href="/board/FreeBoard/ABOARD">익명게시판</a></li>-->
             </ul>
         </div>
 
@@ -36,7 +41,12 @@
                 <li class="bodyTag">히트수</li>
             </ul>
             <ul class="bodyList" th:each="item, stat :${items.getContent()}">
-                <li class="bodyTag1"><a th:href="@{'/board/view/' + ${item.id}}" th:text="${item.title}"></a></li>
+                <li class="bodyTag1">
+                    <form method="get" action="/board/view">
+                        <input type="hidden" name="id" th:value="${item.id}">
+                        <button class="getBt" type="submit"><span th:text="${item.title}"></span></button>
+                    </form>
+                </li>
                 <li class="bodyTag" th:text="${item.createdBy}">작성자</li>
                 <li class="bodyTag2" th:text="${#temporals.format(item.regTime, 'yy년 M월 d일 H:mm')}">작성일</li>
                 <li class="bodyTag" th:text="${item.good}">히트수</li>
@@ -45,17 +55,17 @@
             <div th:with="start=${(items.number/maxPage)*maxPage + 1} , end=(${(items.totalPages ==0 ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1) : items.totalPages) ) } )">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${items.number eq 0} ? 'disabled' : '' ">
-                        <a th:href="@{'/board/FindMusic/'+${items.number-1}}" class="page-link" aria-label="Prev">
+                        <a th:href="@{'/board/FreeBoard/'+${items.number-1}}" class="page-link" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
 
                     <li th:each="page : ${#numbers.sequence(start,end)}" th:classappend="${items.number eq page-1} ? 'active' : '' " class="page-item">
-                        <a th:href="@{'/board/FindMusic/'+${page-1}}" th:text="${page}" class="page-link"></a>
+                        <a th:href="@{'/board/FreeBoard/'+${page-1}}" th:text="${page}" class="page-link"></a>
                     </li>
 
                     <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled' : ''">
-                        <a th:href="@{'/board/FindMusic/'+${items.number+1}}" aria-label="Next" class="page-link">
+                        <a th:href="@{'/board/FreeBoard/'+${items.number+1}}" aria-label="Next" class="page-link">
                             <span aria-hidden="true">Next</span>
                         </a>
                     </li>

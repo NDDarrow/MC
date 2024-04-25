@@ -17,16 +17,25 @@
         </div>
         <div class="right-click">
             <i class="bi bi-bell"></i>
-            <button><a href="/members/MyUpdate">회원정보 수정</a></button>
+            <button class="UBt" ><a href="/members/MyUpdate">회원정보 수정</a></button>
         </div>
     </div>
 
     <div class="middle-click">
-        <span class="content2"><a href="/members/MyPage/post">작성글</a></span>
+        <form method="get" action="/members/MyPage">
+            <input type="hidden" name="tag" value="post">
+            <button class="getBt" type="submit"><span class="content2">작성글</span></button>
+        </form>
         <span class="line"></span>
-        <span class="comment2"><a href="/members/MyPage/comment">댓글수</a></span>
+        <form method="get" action="/members/MyPage">
+            <input type="hidden" name="tag" value="comment">
+            <button class="getBt" type="submit"><span class="comment2">댓글수</span></button>
+        </form>
         <span class="line"></span>
-        <span class="follow2"><a href="/members/MyPage/follow">팔로우</a></span>
+        <form method="get" action="/members/MyPage">
+            <input type="hidden" name="tag" value="follow">
+            <button class="getBt" type="submit"><span class="follow2">팔로우</span></button>
+        </form>
     </div>
 
     <hr>
@@ -60,9 +69,10 @@
             <li class="bodyTag1">팔로우 목록</li>
         </ul>
         <ul class="bodyList-f" th:each="follow, stat :${follow.getContent()}">
-            <a th:href="@{'/members/FPage/' + ${follow.followerId}}">
-                <span th:text="${follow.followerNick}"></span>
-            </a>
+            <form method="get" action="/members/FPage">
+                <input type="hidden" name="followerId" th:value="${follow.followerId}">
+                <button class="getBt" type="submit"><span th:text="${follow.followerNick}"></span></button>
+            </form>
         </ul>
     </div>
 </div>

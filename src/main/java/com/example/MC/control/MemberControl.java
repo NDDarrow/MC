@@ -45,8 +45,8 @@ public class MemberControl {
     private final CommentRepo commentRepo;
 
     //팔로우
-    @GetMapping("/Follow/{id}")
-    String addFollower(@PathVariable("id") String mId, Principal principal, HttpServletRequest request, Model model){
+    @GetMapping("/Follow")
+    String addFollower(@RequestParam("postId") String mId, Principal principal, HttpServletRequest request, Model model){
         long id = Long.parseLong(mId);
         Post post = postRepo.findById(id).get();
         Member follower = memberService.findByEmail(principal.getName());
@@ -56,8 +56,8 @@ public class MemberControl {
         model.addAttribute("followSuccess","팔로우가 되었습니다");
         return "redirect:" + referer;
     }
-    @GetMapping("/cFollow/{id}")
-    String addCFollower(@PathVariable("id") String mId, Principal principal, HttpServletRequest request, Model model){
+    @GetMapping("/cFollow")
+    String addCFollower(@RequestParam("commentId") String mId, Principal principal, HttpServletRequest request, Model model){
         long id = Long.parseLong(mId);
         Comment comment = commentRepo.findById(id).get();
         Member follower = memberService.findByEmail(principal.getName());
@@ -148,22 +148,25 @@ public class MemberControl {
     }
 
     //내정보 이동
-    @GetMapping(value = {"/MyPage/{tag}","/MyPage/{tag}/{page}"})
-    public String myPage(Principal principal,@PathVariable("tag") String tag, @PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/MyPage","/MyPage/{page}"})
+    public String myPage(Principal principal,@RequestParam("tag") String tag, @PathVariable("page") Optional<Integer> page, Model model){
         String userEmail = principal.getName();
         Member user = memberService.findByEmail(userEmail);
         if(tag.equals("post")) {
             Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
             Page<PostDto> myList = postService.getMyList(user, pageable);
             model.addAttribute("items", myList);
+            model.addAttribute("maxPage",5);
         }else if(tag.equals("comment")){
             Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
             Page<CommentDto> myList = commentService.getMyList(user, pageable);
             model.addAttribute("item", myList);
+            model.addAttribute("maxPage",5);
         }else if(tag.equals("follow")){
             Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
             Page<FollowerDto> myList= memberService.getMyList(user, pageable);
             model.addAttribute("follow", myList);
+            model.addAttribute("maxPage",5);
         }
         int myPostCnt = postService.myPostCnt(user);
         int myCommentCnt = commentService.myCommentCnt(user);
@@ -174,8 +177,8 @@ public class MemberControl {
         model.addAttribute("user",userDto);
         return "member/myPage";
     }
-    @GetMapping(value = {"/FPage/{followerId}","/FPage/{followerId}/{page}"})
-    public String openPage(@PathVariable("followerId") String id,@PathVariable("page") Optional<Integer> page, Model model){
+    @GetMapping(value = {"/FPage","/FPage/{page}"})
+    public String openPage(@RequestParam("followerId") String id,@PathVariable("page") Optional<Integer> page, Model model){
         long followerId = Long.parseLong(id);
         Member follower = memberService.findById(followerId).get();
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);

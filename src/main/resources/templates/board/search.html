@@ -7,7 +7,7 @@
 <div layout:fragment="content">
     <div class="listWrap">
         <div class="queryView">
-            <span th:text=""></span>
+            <span th:text="@{'검색 내용 : '+ ${query}}"></span>
         </div>
         <ul class="bodyList">
             <li class="bodyTag1">제목</li>
@@ -15,18 +15,16 @@
             <li class="bodyTag2">작성일</li>
             <li class="bodyTag">히트수</li>
         </ul>
-        <ul th:if="${items.getContent() != null}" class="bodyList" th:each="item, stat : ${searchResult.getContent()}">
+        <ul class="bodyList" th:each="item, stat : ${searchResult.getContent()}">
             <li class="bodyTag1"><a th:href="@{'/board/view?id=' + ${item.id}}" th:text="${item.title}"></a></li>
             <li class="bodyTag" th:text="${item.createdBy}"></li>
             <li class="bodyTag2" th:text="${#temporals.format(item.regTime, 'yy년 M월 d일 H:mm')}"></li>
             <li class="bodyTag" th:text="${item.good}"></li>
         </ul>
 
-        <ul th:unless="${items.getContent()} != null" class="bodyList">
-            <li class="bodyTag">
-                <span>검색 결과가 없습니다</span>
-            </li>
-        </ul>
+        <div th:if="${items} == null" class="queryView">
+            <span>검색 결과가 없습니다</span>
+        </div>
     </div>
 </div>
 

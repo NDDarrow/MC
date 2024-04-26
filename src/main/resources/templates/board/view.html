@@ -139,7 +139,7 @@
             <div th:with="start=${(items.number/maxPage)*maxPage + 1} , end=(${(items.totalPages ==0 ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1) : items.totalPages) ) } )">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${items.number eq 0} ? 'disabled' : '' ">
-                        <a th:href="@{'/board/view/'+${items.number-1}}" class="page-link" aria-label="Prev">
+                        <a th:href="@{'/board/view?id='+${post.id}+'&page='+${items.number-1}}" class="page-link" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
@@ -149,7 +149,7 @@
                     </li>
 
                     <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled' : ''">
-                        <a th:href="@{'/board/view/'+${items.number+1}}" aria-label="Next" class="page-link">
+                        <a th:href="@{'/board/view?id='+${post.id}+'&page='+${items.number+1}}" aria-label="Next" class="page-link">
                             <span aria-hidden="true">Next</span>
                         </a>
                     </li>

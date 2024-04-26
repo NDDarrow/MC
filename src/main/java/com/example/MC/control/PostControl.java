@@ -47,6 +47,7 @@ public class PostControl {
         model.addAttribute("items", genreList);
         model.addAttribute("maxPage",5);
         model.addAttribute("board","genre");
+        model.addAttribute("tag",genre );
         return "/board/Genre";
     }
 
@@ -70,6 +71,7 @@ public class PostControl {
         model.addAttribute("items", FreeList);
         model.addAttribute("maxPage",5);
         model.addAttribute("board","freeBoard");
+        model.addAttribute("tag",genre );
         return "/board/Freeboard";
     }
     //뉴스게시판 이동
@@ -81,6 +83,7 @@ public class PostControl {
         model.addAttribute("items", NewsList);
         model.addAttribute("maxPage",5);
         model.addAttribute("board","news");
+        model.addAttribute("tag",genre );
         return "/board/News";
     }
     @GetMapping(value = {"/SC"})
@@ -91,10 +94,11 @@ public class PostControl {
         model.addAttribute("items", SCList);
         model.addAttribute("maxPage", 5);
         model.addAttribute("board", "SC");
+        model.addAttribute("tag",genre );
         return "/board/SC";
     }
     //게시글 보기
-    @GetMapping(value = {"/view"})
+    @GetMapping(value = {"/view","/view/{page}"})
     public String viewPost(@RequestParam("id") long id,@RequestParam("page") Optional<Integer> page, Model model, Principal principal){
         PostDto postDto = postService.viewPost(id);
         model.addAttribute("post",postDto);
@@ -119,16 +123,16 @@ public class PostControl {
     //게시글 작성
     @PostMapping("/posting")
     public String writePost(@Valid PostDto postDto, BindingResult bindingResult, Principal principal,@RequestParam("postImgFile") List<MultipartFile> multipartFileList, Model model, HttpServletRequest request){
-       if(bindingResult.hasErrors()){
-           return "/board/PostForm";
-       }
+        if(bindingResult.hasErrors()){
+            return "/board/PostForm";
+        }
         Member user =memberService.findByEmail(principal.getName());
-       try{
-           postService.writePost(postDto, user, multipartFileList);
-       }catch(Exception e){
-           model.addAttribute("errorMessage" ,"게시글 저장 중 오류가 발생했습니다");
-           return "/board/PostForm";
-       }
+        try{
+            postService.writePost(postDto, user, multipartFileList);
+        }catch(Exception e){
+            model.addAttribute("errorMessage" ,"게시글 저장 중 오류가 발생했습니다");
+            return "/board/PostForm";
+        }
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
@@ -157,7 +161,7 @@ public class PostControl {
     //댓글 작성
     @PostMapping("/comment")
     public String writeComment(@RequestParam("id") String postId,@RequestParam("body") String body,Principal principal){
-       long id = Long.parseLong(postId);
+        long id = Long.parseLong(postId);
         CommentDto commentDto = new CommentDto();
         commentDto.setBody(body);
         commentDto.setWriter(principal.getName());
@@ -183,7 +187,7 @@ public class PostControl {
 
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
-        return "redirect:/board/view?id=" + postId;
+        return "redirect:/board/view?id="+postId;
     }
     //좋아요
     @GetMapping("/good/{id}")
@@ -208,7 +212,7 @@ public class PostControl {
             // 응답에 쿠키 추가
             response.addCookie(cookie);
         }
-        return "redirect:/board/view?id=" + postId;
+        return "redirect:/board/view?id="+postId;
     }
     //싫어요
     @GetMapping("/bad/{id}")
@@ -232,7 +236,7 @@ public class PostControl {
             // 응답에 쿠키 추가
             response.addCookie(cookie);
         }
-        return "redirect:/board/view?id=" + postId;
+        return "redirect:/board/view?id="+postId;
     }
     @GetMapping("view/update")
     public String postUpdate(@RequestParam("id") String postId, Model model){

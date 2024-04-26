@@ -39,6 +39,7 @@ public class MainControl {
     public String search(@RequestParam("page") Optional<Integer> page, @RequestParam("query")String query, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<PostDto> postDtoPage = postService.searchPost(query,pageable);
+        model.addAttribute("query", query);
         model.addAttribute("searchResult",postDtoPage);
         model.addAttribute("itemSearchDto", new ItemSearchDto() );
         return "/board/search";

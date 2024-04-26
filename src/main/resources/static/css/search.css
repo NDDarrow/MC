@@ -1,0 +1,15 @@
+.queryView{
+    width:80%;
+    padding: 0;
+    margin: 10px auto;
+    display: flex;
+    justify-content:center;
+}
+.queryView span{
+    width:100%;
+    font-family: "Nanum Gothic", sans-serif;
+    font-weight: 700;
+    font-size:25px;
+    display: flex;
+    justify-content:center;
+}

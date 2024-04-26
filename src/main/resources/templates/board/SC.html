@@ -24,9 +24,9 @@
 
         <div class="category">
             <ul>
-                <li class="NOTICE off"><a href="/board/SC/NOTICE">공지사항</a></li>
-                <li class="QA off"><a href="/board/SC/QA">문의사항</a></li>
-                <li class="REPORT off"><a href="/board/SC/REPORT">게시글 신고</a></li>
+                <li class="NOTICE off"><a href="/board/SC?genre=NOTICE">공지사항</a></li>
+                <li class="QA off"><a href="/board/SC?genre=QA">문의사항</a></li>
+                <li class="REPORT off"><a href="/board/SC?genre=REPORT">게시글 신고</a></li>
             </ul>
         </div>
 
@@ -47,17 +47,17 @@
             <div th:with="start=${(items.number/maxPage)*maxPage + 1} , end=(${(items.totalPages ==0 ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1) : items.totalPages) ) } )">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${items.number eq 0} ? 'disabled' : '' ">
-                        <a th:href="@{'/board/FindMusic/'+${items.number-1}}" class="page-link" aria-label="Prev">
+                        <a th:href="@{'/board/SC?genre='+${tag}+'&page='+${items.number-1}}" class="page-link" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
 
                     <li th:each="page : ${#numbers.sequence(start,end)}" th:classappend="${items.number eq page-1} ? 'active' : '' " class="page-item">
-                        <a th:href="@{'/board/FindMusic/'+${page-1}}" th:text="${page}" class="page-link"></a>
+                        <a th:href="@{'/board/SC?genre='+${tag}+'&page='+${page-1}}" th:text="${page}" class="page-link"></a>
                     </li>
 
                     <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled' : ''">
-                        <a th:href="@{'/board/FindMusic/'+${items.number+1}}" aria-label="Next" class="page-link">
+                        <a th:href="@{'/board/SC?genre='+${tag}+'&page='+${items.number+1}}" aria-label="Next" class="page-link">
                             <span aria-hidden="true">Next</span>
                         </a>
                     </li>

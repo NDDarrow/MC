@@ -80,9 +80,6 @@
         </div>
 
         <div class="listWrap">
-            <div class="showQuery">
-                <span th:text=""></span>
-            </div>
             <ul class="bodyList">
                 <li class="bodyTag1">제목</li>
                 <li class="bodyTag">작성자</li>
@@ -103,17 +100,17 @@
             <div th:with="start=${(items.number/maxPage)*maxPage + 1} , end=(${(items.totalPages ==0 ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1) : items.totalPages) ) } )">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${items.number eq 0} ? 'disabled' : '' ">
-                        <a th:href="@{'/board/Genre/'+${items.number-1}}" class="page-link" aria-label="Prev">
+                        <a th:href="@{'/board/Genre?genre='+${tag}+'&page='+${items.number-1}}" class="page-link" aria-label="Prev">
                             <span aria-hidden="true">Prev</span>
                         </a>
                     </li>
 
                     <li th:each="page : ${#numbers.sequence(start,end)}" th:classappend="${items.number eq page-1} ? 'active' : '' " class="page-item">
-                        <a th:href="@{'/board/Genre?id='+{items.id}+'&page='+${page-1}}" th:text="${page}" class="page-link"></a>
+                        <a th:href="@{'/board/Genre?genre='+${tag}+'&page='+${page-1}}" th:text="${page}" class="page-link"></a>
                     </li>
 
                     <li class="page-item" th:classappend="${items.number+1 ge items.totalPages}?'disabled' : ''">
-                        <a th:href="@{'/board/Genre/'+${items.number+1}}" aria-label="Next" class="page-link">
+                        <a th:href="@{'/board/Genre?genre='+${tag}+'&page='+${items.number+1}}" aria-label="Next" class="page-link">
                             <span aria-hidden="true">Next</span>
                         </a>
                     </li>

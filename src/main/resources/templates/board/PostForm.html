@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragment/basic}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{fragment/basic}" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/PostForm.css}">
 </th:block>
@@ -33,15 +33,23 @@
                 <select th:field="*{board}" class="dropdown">
                     <option value="" class="placeholder" selected hidden>카테고리를 선택해 주세요.</option>
                     <option value="">게시판 선택</option>
-                    <option th:each="board : ${T(com.example.MC.constant.BoardType).values()}"
-                            th:if="${board != T(com.example.MC.constant.BoardType).KNEWS
-                        and board != T(com.example.MC.constant.BoardType).GNEWS
-                        and board != T(com.example.MC.constant.BoardType).FESTIVAL
-                        and board != T(com.example.MC.constant.BoardType).NOTICE
-                        and board != T(com.example.MC.constant.BoardType).QA
-                        and board != T(com.example.MC.constant.BoardType).REPORT}"
-                            th:value="${board}" th:text="${board}">
-                    </option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).ROCK}">락</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).HIPHOP}">힙합</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).K_POP_G}">걸그룹</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).K_POP_B}">보이그룹</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).BALLAD}">발라드</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).METAL}">메탈</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).POP}">팝송</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).CLASSIC}">클래식</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).FINDMUSIC}">음악찾기</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).FREEBOARD}">자유게시판</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).ABOARD}">익명게시판</option>
+                    <option sec:authorize="hasAnyAuthority('ROLE_ADMIN')" th:value="${T(com.example.MC.constant.BoardType).KNEWS}">국내뉴스</option>
+                    <option sec:authorize="hasAnyAuthority('ROLE_ADMIN')" th:value="${T(com.example.MC.constant.BoardType).GNEWS}">해외뉴스</option>
+                    <option sec:authorize="hasAnyAuthority('ROLE_ADMIN')" th:value="${T(com.example.MC.constant.BoardType).FESTIVAL}">행사정보</option>
+                    <option sec:authorize="hasAnyAuthority('ROLE_ADMIN')" th:value="${T(com.example.MC.constant.BoardType).NOTICE}">공지사항</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).REPORT}">신고게시판</option>
+                    <option th:value="${T(com.example.MC.constant.BoardType).QA}">질문사항</option>
                 </select>
                 <p th:if="${#fields.hasErrors('board')}" th:errors="*{board}" class="fieldError"></p>
             </div>
@@ -62,7 +70,7 @@
                 <textarea th:field="*{body}" placeholder="내용을 입력해 주세요." class="posting-content"></textarea>
                 <p th:if="${#fields.hasErrors('body')}" th:errors="*{body}" class="fieldError"></p>
             </div>
-            <button>등록</button>
+            <button class="PBt">등록</button>
         </form>
     </div>
 </div>

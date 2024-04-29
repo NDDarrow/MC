@@ -247,10 +247,10 @@ public class PostControl {
         return "/board/PostUpdate";
     }
     @GetMapping("view/delete")
-    public String postDelete(@RequestParam("id") String postId){
+    public String postDelete(@RequestParam("postId") String postId){
         long id = Long.parseLong(postId);
         postService.deletePost(id);
-        return "/";
+        return "redirect:/";
     }
 
     @GetMapping("/cGood/{id}")

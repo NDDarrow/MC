@@ -180,6 +180,8 @@ public class PostService {
 
     public void deletePost(long id){
         Post post = postRepo.findById(id).get();
+        PostImg postImg = postImgRepo.findByPostId(id);
+        postImgRepo.delete(postImg);
         postRepo.delete(post);
     }
     public Page<PostDto> getMyList(Member user, Pageable pageable){

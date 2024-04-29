@@ -22,7 +22,7 @@
             <li class="bodyTag" th:text="${item.good}"></li>
         </ul>
 
-        <div th:if="${items} == null" class="queryView">
+        <div th:if="${searchResult.content.isEmpty()}" class="queryView">
             <span>검색 결과가 없습니다</span>
         </div>
     </div>

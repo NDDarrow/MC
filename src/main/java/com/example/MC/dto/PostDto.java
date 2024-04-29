@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PostDto {
+public class PostDto implements Comparable<PostDto> {
     private Long id;
 
     @NotNull(message = "게시판을 선택해 주세요")
@@ -58,5 +58,9 @@ public class PostDto {
         postDto.setCreatedBy(post.getCreatedBy());
         postDto.setCommentCnt(post.getCommentCnt());
         return postDto;
+    }
+    @Override
+    public int compareTo(PostDto post){
+       return this.getRegTime().compareTo(post.getRegTime());
     }
 }

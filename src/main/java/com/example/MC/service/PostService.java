@@ -108,14 +108,29 @@ public class PostService {
         return commentList;
     }
     public List<PostDto> getNewsList(){
-        List<Post> news = postRepo.findFirst10ByBoardOrderByIdDesc(BoardType.KNEWS);
+        List<Post> KNews = postRepo.findFirst10ByBoardOrderByIdDesc(BoardType.KNEWS);
+        List<Post> GNews = postRepo.findFirst10ByBoardOrderByIdDesc(BoardType.GNEWS);
+        List<Post> Festival = postRepo.findFirst10ByBoardOrderByIdDesc(BoardType.FESTIVAL);
         List<PostDto> newsList = new ArrayList<>();
-        for(Post post : news){
+        for(Post post : KNews){
             Member user = memberRepo.findByEmail(post.getCreatedBy());
             PostDto postDto =  PostDto.of(post);
             postDto.setCreatedBy(user.getUserNick());
             newsList.add(postDto);
         }
+        for(Post post : GNews){
+            Member user = memberRepo.findByEmail(post.getCreatedBy());
+            PostDto postDto =  PostDto.of(post);
+            postDto.setCreatedBy(user.getUserNick());
+            newsList.add(postDto);
+        }
+        for(Post post : Festival) {
+            Member user = memberRepo.findByEmail(post.getCreatedBy());
+            PostDto postDto = PostDto.of(post);
+            postDto.setCreatedBy(user.getUserNick());
+            newsList.add(postDto);
+        }
+        newsList.sort(PostDto::compareTo);
         return newsList;
     }
     public Post findPost(long id){

@@ -239,7 +239,7 @@ public class PostControl {
         return "redirect:/board/view?id="+postId;
     }
     @GetMapping("view/update")
-    public String postUpdate(@RequestParam("id") String postId, Model model){
+    public String postUpdate(@RequestParam("postId") String postId, Model model){
         long id = Long.parseLong(postId);
         Post post = postService.findPost(id);
         PostDto postDto = PostDto.of(post);

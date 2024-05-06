@@ -48,7 +48,7 @@ public class PostControl {
         model.addAttribute("maxPage",5);
         model.addAttribute("board","genre");
         model.addAttribute("tag",genre );
-        return "/board/Genre";
+        return "board/Genre";
     }
 
     //음악찾기 게시판 이동
@@ -60,7 +60,7 @@ public class PostControl {
         model.addAttribute("items", FMList);
         model.addAttribute("maxPage",5);
         model.addAttribute("board","findMusic");
-        return "/board/FindMusic";
+        return "board/FindMusic";
     }
     //자유게시판 이동
     @GetMapping(value = {"/FreeBoard"})
@@ -72,7 +72,7 @@ public class PostControl {
         model.addAttribute("maxPage",5);
         model.addAttribute("board","freeBoard");
         model.addAttribute("tag",genre );
-        return "/board/Freeboard";
+        return "board/Freeboard";
     }
     //뉴스게시판 이동
     @GetMapping(value = {"/News"})
@@ -84,7 +84,7 @@ public class PostControl {
         model.addAttribute("maxPage",5);
         model.addAttribute("board","news");
         model.addAttribute("tag",genre );
-        return "/board/News";
+        return "board/News";
     }
     @GetMapping(value = {"/SC"})
     public String SCBoard(@RequestParam("genre") String genre, @RequestParam("page") Optional<Integer> page, Model model) {
@@ -95,7 +95,7 @@ public class PostControl {
         model.addAttribute("maxPage", 5);
         model.addAttribute("board", "SC");
         model.addAttribute("tag",genre );
-        return "/board/SC";
+        return "board/SC";
     }
     //게시글 보기
     @GetMapping(value = {"/view","/view/{page}"})
@@ -112,26 +112,26 @@ public class PostControl {
         if(principal != null){
             model.addAttribute("principal",principal.getName());
         }
-        return "/board/view";
+        return "board/view";
     }
     //게시글 작성 이동
     @GetMapping("/posting")
     public String writeForm(Model model){
         model.addAttribute("postDto", new PostDto());
-        return "/board/PostForm";
+        return "board/PostForm";
     }
     //게시글 작성
     @PostMapping("/posting")
     public String writePost(@Valid PostDto postDto, BindingResult bindingResult, Principal principal,@RequestParam("postImgFile") List<MultipartFile> multipartFileList, Model model, HttpServletRequest request){
         if(bindingResult.hasErrors()){
-            return "/board/PostForm";
+            return "board/PostForm";
         }
         Member user =memberService.findByEmail(principal.getName());
         try{
             postService.writePost(postDto, user, multipartFileList);
         }catch(Exception e){
             model.addAttribute("errorMessage" ,"게시글 저장 중 오류가 발생했습니다");
-            return "/board/PostForm";
+            return "board/PostForm";
         }
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
@@ -140,17 +140,17 @@ public class PostControl {
     @PostMapping("/postUpdate")
     public String updatePost(@Valid PostDto postDto,BindingResult bindingResult, @RequestParam("postImgFile") List<MultipartFile> multipartFileList, Model model, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
-            return "/board/PostUpdate";
+            return "board/PostUpdate";
         }
         try {
             postService.updatePosting(postDto, multipartFileList);
         }catch(Exception e){
             model.addAttribute("errorMessage" ,"게시글 저장 중 오류가 발생했습니다");
             e.printStackTrace();
-            return "/board/PostForm";
+            return "board/PostForm";
         }
         redirectAttributes.addAttribute("postId", postDto.getId());
-        return "redirect:/board/view/{postId}";
+        return "redirect:board/view/{postId}";
     }
     //익명 게시글 작성
     @PostMapping("/Aboard/post")
@@ -171,7 +171,7 @@ public class PostControl {
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
         postService.updatePost(post);
-        return "redirect:/board/view?id="+postId;
+        return "redirect:board/view?id="+postId;
     }
     //대댓글 작성
     @PostMapping("/reply")
@@ -187,7 +187,7 @@ public class PostControl {
 
         commentService.writeComment(comment);
         post.setCommentCnt(post.getCommentCnt()+1);
-        return "redirect:/board/view?id="+postId;
+        return "redirect:board/view?id="+postId;
     }
     //좋아요
     @GetMapping("/good/{id}")
@@ -212,7 +212,7 @@ public class PostControl {
             // 응답에 쿠키 추가
             response.addCookie(cookie);
         }
-        return "redirect:/board/view?id="+postId;
+        return "redirect:board/view?id="+postId;
     }
     //싫어요
     @GetMapping("/bad/{id}")
@@ -236,7 +236,7 @@ public class PostControl {
             // 응답에 쿠키 추가
             response.addCookie(cookie);
         }
-        return "redirect:/board/view?id="+postId;
+        return "redirect:board/view?id="+postId;
     }
     @GetMapping("view/update")
     public String postUpdate(@RequestParam("postId") String postId, Model model){
@@ -244,7 +244,7 @@ public class PostControl {
         Post post = postService.findPost(id);
         PostDto postDto = PostDto.of(post);
         model.addAttribute("postDto", postDto);
-        return "/board/PostUpdate";
+        return "board/PostUpdate";
     }
     @GetMapping("view/delete")
     public String postDelete(@RequestParam("postId") String postId){
@@ -275,7 +275,7 @@ public class PostControl {
             // 응답에 쿠키 추가
             response.addCookie(cookie);
         }
-        return "redirect:/board/view?id="+comment.getPost().getId();
+        return "redirect:board/view?id="+comment.getPost().getId();
     }
     //싫어요
     @GetMapping("/cBad/{id}")
@@ -300,12 +300,12 @@ public class PostControl {
             // 응답에 쿠키 추가
             response.addCookie(cookie);
         }
-        return "redirect:/board/view?id="+comment.getPost().getId();
+        return "redirect:board/view?id="+comment.getPost().getId();
     }
     @GetMapping("/cDelete/{id}")
     public String commentDelete(@PathVariable("id") String postId){
         long id = Long.parseLong(postId);
         long post_id = commentService.deleteComment(id);
-        return "redirect:/board/view?id="+post_id;
+        return "redirect:board/view?id="+post_id;
     }
 }

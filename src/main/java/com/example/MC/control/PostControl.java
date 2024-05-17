@@ -72,7 +72,7 @@ public class PostControl {
         model.addAttribute("maxPage",5);
         model.addAttribute("board","freeBoard");
         model.addAttribute("tag",genre );
-        return "board/Freeboard";
+        return "board/FreeBoard";
     }
     //뉴스게시판 이동
     @GetMapping(value = {"/News"})

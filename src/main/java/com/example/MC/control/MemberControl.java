@@ -72,7 +72,7 @@ public class MemberControl {
     @GetMapping("/signUp")
     public String memberForm(Model model) {
         model.addAttribute("memberDto", new MemberDto());
-        return "member/signUP";
+        return "member/signUp";
     }
     //회원가입 요청 완
     @PostMapping("/signUp")
